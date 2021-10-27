@@ -1,18 +1,35 @@
-const { AwsCdkConstructLibrary } = require('projen');
+const { AwsCdkConstructLibrary, NpmAccess } = require('projen');
 const project = new AwsCdkConstructLibrary({
-  author: 'Brandon Miller',
-  authorAddress: 'brandon@digital-reboot.com',
-  cdkVersion: '1.95.2',
-  defaultReleaseBranch: 'main',
-  name: 'cdk-aspects-library-security-group',
-  repositoryUrl: 'git@github.com:RenovoSolutions/cdk-aspects-library-security-group.git',
-
-  // cdkDependencies: undefined,      /* Which AWS CDK modules (those that start with "@aws-cdk/") does this library require when consumed? */
-  // cdkTestDependencies: undefined,  /* AWS CDK modules required for testing. */
-  // deps: [],                        /* Runtime dependencies of this module. */
-  // description: undefined,          /* The description is just a string that helps people understand the purpose of the package. */
-  // devDeps: [],                     /* Build dependencies for this module. */
-  // packageName: undefined,          /* The "name" in package.json. */
-  // release: undefined,              /* Add release management to this project. */
+  author: 'Renovo Solutions',
+  authorAddress: 'webmaster+cdk@renovo1.com',
+  cdkVersion: '1.129.0',
+  defaultReleaseBranch: 'master',
+  name: '@renovosolutions/cdk-aspects-library-security-group',
+  description: 'A library of CDK aspects applying to security groups.',
+  repositoryUrl: 'https://github.com/RenovoSolutions/cdk-aspects-library-security-group.git',
+  cdkDependencies: [
+    '@aws-cdk/core',
+    '@aws-cdk/aws-ec2',
+  ],
+  keywords: [
+    'cdk',
+    'aws-cdk',
+    'aws-cdk-construct',
+    'projen',
+  ],
+  releaseToNpm: true,
+  releaseWorkflow: true,
+  npmAccess: NpmAccess.PUBLIC,
+  cdkAssert: true,
+  docgen: true,
+  eslint: true,
+  publishToPypi: {
+    distName: 'renovosolutions.aws-cdk-aspects-security-group',
+    module: 'aspects-security-group',
+  },
+  publishToNuget: {
+    dotNetNamespace: 'renovosolutions',
+    packageId: 'Renovo.AWSCDK.AspectsSecurityGroup',
+  },
 });
 project.synth();
