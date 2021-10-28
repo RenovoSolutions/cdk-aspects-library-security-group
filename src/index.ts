@@ -36,7 +36,7 @@ export interface IAspectPropsBase {
  */
 export interface IAspectPropsExtended extends IAspectPropsBase {
   /**
-   * The restricted port. Defaults to all ports.
+   * The restricted port. Defaults to restricting all ports and only checking sources.
    *
    *
    * @default undefined
@@ -50,6 +50,22 @@ export interface IAspectPropsExtended extends IAspectPropsBase {
    * @default ['0.0.0.0/0', '::/0']
    */
   restrictedCidrs?: string[];
+
+  /**
+   * The restricted source security groups for the given port.
+   *
+   *
+   * @default undefined
+   */
+  restrictedSGs?: string[];
+
+  /**
+   * Whether any source is valid. This will ignore all other restrictions and only check the port.
+   *
+   *
+   * @default false
+   */
+  anySource?: boolean;
 }
 
 /**
@@ -69,7 +85,10 @@ export function anyInRange(num: number[], from: number, to: number) {
 /**
  * Function to annotate a node based on a defined annotation type.
  */
-export function annotate(node:cdk.IConstruct, annotationText:string, annotationType:AnnotationType) {
+export function annotate(node:cdk.IConstruct, annotationText:string | undefined, annotationType:AnnotationType | undefined) {
+  annotationText = annotationText || 'A security group rule was blocked by an aspect applied to this stack.';
+  annotationType = annotationType || AnnotationType.ERROR;
+
   switch (annotationType) {
     case 'error':
       cdk.Annotations.of(node).addError(annotationText);
@@ -83,46 +102,68 @@ export function annotate(node:cdk.IConstruct, annotationText:string, annotationT
   }
 }
 
+export interface IRuleCheckArgs extends IAspectPropsExtended {
+  /**
+   * The node to check.
+   */
+  node: cdk.IConstruct;
+}
+
 /**
  * Function to check a node for security group rules and determine if they breaks the rules of a given aspect.
  */
-function checkRules(
-  node: cdk.IConstruct,
-  restrictedCidrs:string[],
-  annotationText:string,
-  annotationType:AnnotationType,
-  ports:number[] | undefined,
-) {
-  if (node instanceof ec2.CfnSecurityGroup) {
-    checkInlineRules(cdk.Stack.of(node).resolve(node.securityGroupIngress));
-  } else if (node instanceof ec2.CfnSecurityGroupIngress) {
-    checkRule(node);
+function checkRules(args: IRuleCheckArgs) {
+  if (args.node instanceof ec2.CfnSecurityGroup) {
+    checkInlineRules(cdk.Stack.of(args.node).resolve(args.node.securityGroupIngress));
+  } else if (args.node instanceof ec2.CfnSecurityGroupIngress) {
+    checkRule(args.node);
   }
 
   function checkInlineRules(rules:Array<ec2.CfnSecurityGroup.IngressProperty>) {
     if (rules) {
       for (const rule of rules.values()) {
-        if (rule.cidrIp && rule.fromPort && rule.toPort && ports !== undefined) { // annotation for port sensitive rules
-          if (!cdk.Tokenization.isResolvable(rule) && restrictedCidrs.includes(rule.cidrIp) && anyInRange(ports, rule.fromPort, rule.toPort)) {
-            annotate(node, annotationText, annotationType);
-          }
-        } else { // annotation for non-port sensitive rules
-          if (!cdk.Tokenization.isResolvable(rule) && (rule.cidrIp && restrictedCidrs.includes(rule.cidrIp)) && ports === undefined) {
-            annotate(node, annotationText, annotationType);
-          }
-        }
+        checkRule(rule);
       }
     }
   }
 
-  function checkRule(rule: ec2.CfnSecurityGroupIngress) {
-    if (rule.cidrIp && rule.fromPort && rule.toPort && ports !== undefined) { // annotation for port sensitive rules
-      if (!cdk.Tokenization.isResolvable(rule) && restrictedCidrs.includes(rule.cidrIp) && anyInRange(ports, rule.fromPort, rule.toPort)) {
-        annotate(node, annotationText, annotationType);
+  function checkRule(rule: ec2.CfnSecurityGroupIngress | ec2.CfnSecurityGroup.IngressProperty) {
+    if (!cdk.Tokenization.isResolvable(rule)) {
+      let matchingSource = false;
+      let matchingPort = false;
+      let shouldAnnotate = false;
+
+      if (args.ports === undefined) {
+        matchingPort = true;
+      } else if (args.ports && rule.fromPort && rule.toPort && anyInRange(args.ports, rule.fromPort, rule.toPort)) {
+        matchingPort = true;
       }
-    } else { // annotation for non-port sensitive rules
-      if (!cdk.Tokenization.isResolvable(rule) && (rule.cidrIp && restrictedCidrs.includes(rule.cidrIp)) && ports === undefined) {
-        annotate(node, annotationText, annotationType);
+
+      if (rule.cidrIp) {
+        if (args.anySource) {
+          matchingSource = true;
+        }
+        if (args.anySource == false && args.restrictedCidrs !== undefined && args.restrictedCidrs.includes(rule.cidrIp)) {
+          matchingSource = true;
+        }
+        if (matchingSource && matchingPort) {
+          shouldAnnotate = true;
+        }
+      }
+      if (rule.sourceSecurityGroupId) {
+        if (args.anySource) {
+          matchingSource = true;
+        }
+        if (args.anySource == false && args.restrictedSGs !== undefined && args.restrictedSGs.includes(rule.sourceSecurityGroupId)) {
+          matchingSource = true;
+        }
+        if (matchingSource && matchingPort) {
+          shouldAnnotate = true;
+        }
+      }
+
+      if (shouldAnnotate) {
+        annotate(args.node, args.annotationText, args.annotationType);
       }
     }
   }
@@ -138,23 +179,29 @@ export class SecurityGroupAspectBase implements cdk.IAspect {
   public annotationText: string;
   public annotationType: AnnotationType;
   public ports: number[] | undefined;
-  public restrictedCidrs: string[];
+  public restrictedCidrs: string[] | undefined;
+  public restrictedSGs: string[] | undefined;
+  public anySource: boolean;
 
   constructor(props?: IAspectPropsExtended) {
     this.annotationType = props?.annotationType ?? AnnotationType.ERROR;
     this.annotationText = props?.annotationText ?? 'A security group rule was blocked by an aspect applied to this stack.';
     this.ports = props?.ports;
     this.restrictedCidrs = props?.restrictedCidrs ?? ['0.0.0.0/0', '::/0'];
+    this.restrictedSGs = props?.restrictedSGs;
+    this.anySource = props?.anySource ?? false;
   }
 
   public visit(node: cdk.IConstruct) {
-    checkRules(
+    checkRules({
       node,
-      this.restrictedCidrs,
-      this.annotationText,
-      this.annotationType,
-      this.ports,
-    );
+      annotationText: this.annotationText,
+      annotationType: this.annotationType,
+      ports: this.ports,
+      restrictedCidrs: this.restrictedCidrs,
+      restrictedSGs: this.restrictedSGs,
+      anySource: this.anySource,
+    });
   }
 }
 
