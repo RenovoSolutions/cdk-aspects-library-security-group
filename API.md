@@ -78,13 +78,94 @@ new CISAwsFoundationBenchmark4Dot2Aspect(props?: IAspectPropsBase)
 
 
 
+### NoIngressCommonManagementPortsAspect <a name="@renovosolutions/cdk-aspects-library-security-group.NoIngressCommonManagementPortsAspect"></a>
+
+Aspect to restrict any access to common management ports.
+
+22 - SSH
+3389 - RDP
+5985 - WinRM
+5986 - WinRM HTTPS
+
+#### Initializers <a name="@renovosolutions/cdk-aspects-library-security-group.NoIngressCommonManagementPortsAspect.Initializer"></a>
+
+```typescript
+import { NoIngressCommonManagementPortsAspect } from '@renovosolutions/cdk-aspects-library-security-group'
+
+new NoIngressCommonManagementPortsAspect(props?: IAspectPropsBase)
+```
+
+##### `props`<sup>Optional</sup> <a name="@renovosolutions/cdk-aspects-library-security-group.NoIngressCommonManagementPortsAspect.parameter.props"></a>
+
+- *Type:* [`@renovosolutions/cdk-aspects-library-security-group.IAspectPropsBase`](#@renovosolutions/cdk-aspects-library-security-group.IAspectPropsBase)
+
+---
+
+
+
+
+
+### NoIngressCommonRelationalDBPortsAspect <a name="@renovosolutions/cdk-aspects-library-security-group.NoIngressCommonRelationalDBPortsAspect"></a>
+
+Aspect to restrict any access to common relational DB ports.
+
+3306 - MySQL
+5432 - PostgreSQL
+1521 - Oracle
+1433 - SQL Server
+
+#### Initializers <a name="@renovosolutions/cdk-aspects-library-security-group.NoIngressCommonRelationalDBPortsAspect.Initializer"></a>
+
+```typescript
+import { NoIngressCommonRelationalDBPortsAspect } from '@renovosolutions/cdk-aspects-library-security-group'
+
+new NoIngressCommonRelationalDBPortsAspect(props?: IAspectPropsBase)
+```
+
+##### `props`<sup>Optional</sup> <a name="@renovosolutions/cdk-aspects-library-security-group.NoIngressCommonRelationalDBPortsAspect.parameter.props"></a>
+
+- *Type:* [`@renovosolutions/cdk-aspects-library-security-group.IAspectPropsBase`](#@renovosolutions/cdk-aspects-library-security-group.IAspectPropsBase)
+
+---
+
+
+
+
+
+### NoIngressCommonWebPortsAspect <a name="@renovosolutions/cdk-aspects-library-security-group.NoIngressCommonWebPortsAspect"></a>
+
+Aspect to restrict any access to common web ports.
+
+80 - HTTP
+443 - HTTPS
+8080 - HTTP
+8443 - HTTPS
+
+#### Initializers <a name="@renovosolutions/cdk-aspects-library-security-group.NoIngressCommonWebPortsAspect.Initializer"></a>
+
+```typescript
+import { NoIngressCommonWebPortsAspect } from '@renovosolutions/cdk-aspects-library-security-group'
+
+new NoIngressCommonWebPortsAspect(props?: IAspectPropsBase)
+```
+
+##### `props`<sup>Optional</sup> <a name="@renovosolutions/cdk-aspects-library-security-group.NoIngressCommonWebPortsAspect.parameter.props"></a>
+
+- *Type:* [`@renovosolutions/cdk-aspects-library-security-group.IAspectPropsBase`](#@renovosolutions/cdk-aspects-library-security-group.IAspectPropsBase)
+
+---
+
+
+
+
+
 ### NoPublicIngressAspect <a name="@renovosolutions/cdk-aspects-library-security-group.NoPublicIngressAspect"></a>
 
 - *Implements:* [`@aws-cdk/core.IAspect`](#@aws-cdk/core.IAspect)
 
-Aspect to determine if a security group allows inbound traffic from the public internet to any port.
+The same as the base NoPublicIngressAspectBase but with a more descriptive annotation.
 
-This inherits everything from the base SecurityGroupAspectBase class and modifies the default annotation text.
+Blocks the ANY port from the public internet.
 
 #### Initializers <a name="@renovosolutions/cdk-aspects-library-security-group.NoPublicIngressAspect.Initializer"></a>
 
@@ -95,6 +176,113 @@ new NoPublicIngressAspect(props?: IAspectPropsBase)
 ```
 
 ##### `props`<sup>Optional</sup> <a name="@renovosolutions/cdk-aspects-library-security-group.NoPublicIngressAspect.parameter.props"></a>
+
+- *Type:* [`@renovosolutions/cdk-aspects-library-security-group.IAspectPropsBase`](#@renovosolutions/cdk-aspects-library-security-group.IAspectPropsBase)
+
+---
+
+
+
+
+
+### NoPublicIngressAspectBase <a name="@renovosolutions/cdk-aspects-library-security-group.NoPublicIngressAspectBase"></a>
+
+- *Implements:* [`@aws-cdk/core.IAspect`](#@aws-cdk/core.IAspect)
+
+The base aspect to determine if a security group allows inbound traffic from the public internet to any port.
+
+This inherits everything from the base SecurityGroupAspectBase class and sets a default set of CIDRS that match allowing all IPs on AWS.
+
+#### Initializers <a name="@renovosolutions/cdk-aspects-library-security-group.NoPublicIngressAspectBase.Initializer"></a>
+
+```typescript
+import { NoPublicIngressAspectBase } from '@renovosolutions/cdk-aspects-library-security-group'
+
+new NoPublicIngressAspectBase(props?: IAspectPropsBase)
+```
+
+##### `props`<sup>Optional</sup> <a name="@renovosolutions/cdk-aspects-library-security-group.NoPublicIngressAspectBase.parameter.props"></a>
+
+- *Type:* [`@renovosolutions/cdk-aspects-library-security-group.IAspectPropsBase`](#@renovosolutions/cdk-aspects-library-security-group.IAspectPropsBase)
+
+---
+
+
+
+
+
+### NoPublicIngressCommonManagementPortsAspect <a name="@renovosolutions/cdk-aspects-library-security-group.NoPublicIngressCommonManagementPortsAspect"></a>
+
+Aspect to restrict public access to common management ports.
+
+22 - SSH
+3389 - RDP
+5985 - WinRM
+5986 - WinRM HTTPS
+
+#### Initializers <a name="@renovosolutions/cdk-aspects-library-security-group.NoPublicIngressCommonManagementPortsAspect.Initializer"></a>
+
+```typescript
+import { NoPublicIngressCommonManagementPortsAspect } from '@renovosolutions/cdk-aspects-library-security-group'
+
+new NoPublicIngressCommonManagementPortsAspect(props?: IAspectPropsBase)
+```
+
+##### `props`<sup>Optional</sup> <a name="@renovosolutions/cdk-aspects-library-security-group.NoPublicIngressCommonManagementPortsAspect.parameter.props"></a>
+
+- *Type:* [`@renovosolutions/cdk-aspects-library-security-group.IAspectPropsBase`](#@renovosolutions/cdk-aspects-library-security-group.IAspectPropsBase)
+
+---
+
+
+
+
+
+### NoPublicIngressCommonRelationalDBPortsAspect <a name="@renovosolutions/cdk-aspects-library-security-group.NoPublicIngressCommonRelationalDBPortsAspect"></a>
+
+Aspect to restrict public access to common relational DB ports.
+
+3306 - MySQL
+5432 - PostgreSQL
+1521 - Oracle
+1433 - SQL Server
+
+#### Initializers <a name="@renovosolutions/cdk-aspects-library-security-group.NoPublicIngressCommonRelationalDBPortsAspect.Initializer"></a>
+
+```typescript
+import { NoPublicIngressCommonRelationalDBPortsAspect } from '@renovosolutions/cdk-aspects-library-security-group'
+
+new NoPublicIngressCommonRelationalDBPortsAspect(props?: IAspectPropsBase)
+```
+
+##### `props`<sup>Optional</sup> <a name="@renovosolutions/cdk-aspects-library-security-group.NoPublicIngressCommonRelationalDBPortsAspect.parameter.props"></a>
+
+- *Type:* [`@renovosolutions/cdk-aspects-library-security-group.IAspectPropsBase`](#@renovosolutions/cdk-aspects-library-security-group.IAspectPropsBase)
+
+---
+
+
+
+
+
+### NoPublicIngressCommonWebPortsAspect <a name="@renovosolutions/cdk-aspects-library-security-group.NoPublicIngressCommonWebPortsAspect"></a>
+
+Aspect to restrict public access to common web ports.
+
+80 - HTTP
+443 - HTTPS
+8080 - HTTP
+8443 - HTTPS
+
+#### Initializers <a name="@renovosolutions/cdk-aspects-library-security-group.NoPublicIngressCommonWebPortsAspect.Initializer"></a>
+
+```typescript
+import { NoPublicIngressCommonWebPortsAspect } from '@renovosolutions/cdk-aspects-library-security-group'
+
+new NoPublicIngressCommonWebPortsAspect(props?: IAspectPropsBase)
+```
+
+##### `props`<sup>Optional</sup> <a name="@renovosolutions/cdk-aspects-library-security-group.NoPublicIngressCommonWebPortsAspect.parameter.props"></a>
 
 - *Type:* [`@renovosolutions/cdk-aspects-library-security-group.IAspectPropsBase`](#@renovosolutions/cdk-aspects-library-security-group.IAspectPropsBase)
 
@@ -154,8 +342,7 @@ new NoPublicIngressSSHAspect(props?: IAspectPropsBase)
 
 The base class for all security group aspects in the library.
 
-By default this will restrict all ports that use the typical "any" CIDRs on AWS (0.0.0.0/0 and ::/0) and
-will generate an error in the CDK metadata with a generic error about a blocked security group rule.
+By default this will not restrict anything.
 
 #### Initializers <a name="@renovosolutions/cdk-aspects-library-security-group.SecurityGroupAspectBase.Initializer"></a>
 
@@ -293,10 +480,10 @@ The annotation type to use for the annotation.
 
 - *Implemented By:* [`@renovosolutions/cdk-aspects-library-security-group.IAspectPropsExtended`](#@renovosolutions/cdk-aspects-library-security-group.IAspectPropsExtended), [`@renovosolutions/cdk-aspects-library-security-group.IRuleCheckArgs`](#@renovosolutions/cdk-aspects-library-security-group.IRuleCheckArgs)
 
-The extended aspect properties available only to the SecurityGroupAspectBase.
+The extended aspect properties available only to the base security aspects.
 
 These additional properties shouldn't be changed in aspects that already have clearly defined goals.
-So, this extended properties interface is applied selectively to the SecurityGroupAspectBase.
+So, this extended properties interface is applied selectively to the base aspects.
 
 
 #### Properties <a name="Properties"></a>
