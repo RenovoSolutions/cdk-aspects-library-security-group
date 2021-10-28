@@ -7,6 +7,9 @@ A CDK library containing EC2 security group related [CDK Aspects](https://docs.a
   - Disallow public access to any port
   - Disallow public access to AWS Restricted Common ports ([per the AWS Config rule](https://docs.aws.amazon.com/config/latest/developerguide/restricted-common-ports.html))
   - Disallow public access to SSH or RDP per CIS Benchmark guidelines and general good practice
+  - Disallow public or ALL access to common management ports like SSH, RDP, WinRM, WinRM over HTTPS
+  - Disallow public or ALL access common relational DB ports like MSSQL, MySQL, PostgreSQL, and Oracle
+  - Disallow public or ALL common web ports like HTTP (80, 8080) and HTTPS (443, 8443)
 - Create any other aspect using the base security group aspect class.
 - By default aspects generate errors in the CDK metadata which the deployment or synth process will find, but this can be changed with the `annotationType` property
 - All default provided aspects restrict based on the public access CIDRs (`0.0.0.0/0` and `::/0`) but you can also defined aspects with any set of restricted CIDRs or security group IDs you like

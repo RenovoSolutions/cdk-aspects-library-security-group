@@ -12,6 +12,12 @@ import {
   AWSRestrictedCommonPortsAspect,
   NoPublicIngressSSHAspect,
   NoPublicIngressRDPAspect,
+  NoPublicIngressCommonWebPortsAspect,
+  NoPublicIngressCommonRelationalDBPortsAspect,
+  NoPublicIngressCommonManagementPortsAspect,
+  NoIngressCommonWebPortsAspect,
+  NoIngressCommonRelationalDBPortsAspect,
+  NoIngressCommonManagementPortsAspect,
 } from '../src/index';
 
 function otherStackSg(app:cdk.App) {
@@ -67,7 +73,7 @@ function testSetup(app:cdk.App, source:ec2.IPeer, port:ec2.Port, disableInlineRu
   };
 }
 
-function getMetadataAnnotations(app:cdk.App, ruleId:string, expectedType:string) {
+function getMetadataAnnotations(app:cdk.App, ruleId:string, expectedMessageType:string) {
   app.synth();
 
   let errors:string[] = [];
@@ -75,7 +81,7 @@ function getMetadataAnnotations(app:cdk.App, ruleId:string, expectedType:string)
   let manifestData = readFileSync(app._assemblyBuilder.assetOutdir + '/manifest.json', 'utf8');
 
   JSON.parse(manifestData).artifacts.TestStack.metadata['/TestStack/SecurityGroup/' + ruleId].forEach( (e:any) => {
-    if (e.type == expectedType) {
+    if (e.type == expectedMessageType) {
       errors.push(e.data);
     }
   });
@@ -83,12 +89,12 @@ function getMetadataAnnotations(app:cdk.App, ruleId:string, expectedType:string)
   return errors;
 }
 
-function expectedMsgMatchMsgs(expectedMsg:string, msgs:string[]) {
+function expectedMessageFromAspectMatchMsgs(expectedMessageFromAspect:string, msgs:string[]) {
   // if msgs is empty return false
   if (msgs.length == 0) {
     return false;
   } else {
-    return msgs.indexOf(expectedMsg) > -1;
+    return msgs.indexOf(expectedMessageFromAspect) > -1;
   }
 }
 
@@ -110,42 +116,42 @@ interface testAspectProps {
   /**
    * The expected annotation message that will be returned by the aspect
    */
-  expectedMsg:string;
+  expectedMessageFromAspect:string;
   /**
    * The expected type of the message
    *
    *
    * @default MsgTypes.ERROR
    */
-  expectedType?:MsgTypes;
+  expectedMessageType?:MsgTypes;
   /**
-   * Whether or not the created security group should disable inline rules
+   * Whether or not the created test security group should disable inline rules
    *
    *
    * @default false
    */
   disableInlineRules?:boolean;
   /**
-   * Expected result of the test
+   * Whether or not the aspect should have generated a message
    *
    *
    * @default true
    */
-  expectedResult?:boolean;
+  shouldHaveGeneratedMessage?:boolean;
 }
 
 function testAspect(app:cdk.App, aspect:SecurityGroupAspectBase, props:testAspectProps) {
   props.disableInlineRules = props.disableInlineRules ?? false;
-  props.expectedType = props.expectedType ?? MsgTypes.ERROR;
-  props.expectedResult = props.expectedResult ?? true;
+  props.expectedMessageType = props.expectedMessageType ?? MsgTypes.ERROR;
+  props.shouldHaveGeneratedMessage = props.shouldHaveGeneratedMessage ?? true;
 
   let setup = testSetup(app, props.source, props.port, props.disableInlineRules);
 
   cdk.Aspects.of(setup.stack).add(aspect);
 
-  let errors = getMetadataAnnotations(setup.app, setup.ruleId, props.expectedType);
+  let errors = getMetadataAnnotations(setup.app, setup.ruleId, props.expectedMessageType);
 
-  expect(expectedMsgMatchMsgs(props.expectedMsg, errors)).toBe(props.expectedResult);
+  expect(expectedMessageFromAspectMatchMsgs(props.expectedMessageFromAspect, errors)).toBe(props.shouldHaveGeneratedMessage);
 }
 
 test('Expect isInRange to return false if port is NOT in range', () => {
@@ -162,7 +168,7 @@ test('A port open to the public (inline rules enabled) should generate a metadat
   testAspect(new cdk.App(), aspect, {
     source: ec2.Peer.anyIpv4(),
     port: ec2.Port.tcp(20),
-    expectedMsg: aspect.annotationText,
+    expectedMessageFromAspect: aspect.annotationText,
   });
 });
 
@@ -174,8 +180,8 @@ test('A port open to the public should generate a metadata warning when NoPublic
   testAspect(new cdk.App(), aspect, {
     source: ec2.Peer.anyIpv4(),
     port: ec2.Port.tcp(20),
-    expectedMsg: aspect.annotationText,
-    expectedType: MsgTypes.WARNING,
+    expectedMessageFromAspect: aspect.annotationText,
+    expectedMessageType: MsgTypes.WARNING,
   });
 });
 
@@ -187,8 +193,8 @@ test('A port open to the public should generate metadata info when NoPublicIngre
   testAspect(new cdk.App(), aspect, {
     source: ec2.Peer.anyIpv4(),
     port: ec2.Port.tcp(20),
-    expectedMsg: aspect.annotationText,
-    expectedType: MsgTypes.INFO,
+    expectedMessageFromAspect: aspect.annotationText,
+    expectedMessageType: MsgTypes.INFO,
   });
 });
 
@@ -198,7 +204,7 @@ test('A port open to the public (inline rules disabled) should generate a metada
   testAspect(new cdk.App(), aspect, {
     source: ec2.Peer.anyIpv4(),
     port: ec2.Port.tcp(20),
-    expectedMsg: aspect.annotationText,
+    expectedMessageFromAspect: aspect.annotationText,
     disableInlineRules: true,
   });
 });
@@ -209,7 +215,7 @@ test('A port open to the public (inline rules disabled) should generate a metada
   testAspect(new cdk.App(), aspect, {
     source: ec2.Peer.anyIpv4(),
     port: ec2.Port.tcp(22),
-    expectedMsg: aspect.annotationText,
+    expectedMessageFromAspect: aspect.annotationText,
     disableInlineRules: true,
   });
 });
@@ -220,7 +226,7 @@ test('Port 22 open to the public should generate an error when NoPublicSSHAspect
   testAspect(new cdk.App(), aspect, {
     source: ec2.Peer.anyIpv4(),
     port: ec2.Port.tcp(22),
-    expectedMsg: aspect.annotationText,
+    expectedMessageFromAspect: aspect.annotationText,
   });
 });
 
@@ -230,7 +236,7 @@ test('Port 22 open to the public as part of a range should generate an error whe
   testAspect(new cdk.App(), aspect, {
     source: ec2.Peer.anyIpv4(),
     port: ec2.Port.tcpRange(10, 30),
-    expectedMsg: aspect.annotationText,
+    expectedMessageFromAspect: aspect.annotationText,
   });
 });
 
@@ -240,7 +246,7 @@ test('Port 3389 open to the public should generate an error when NoPublicRDPAspe
   testAspect(new cdk.App(), aspect, {
     source: ec2.Peer.anyIpv4(),
     port: ec2.Port.tcp(3389),
-    expectedMsg: aspect.annotationText,
+    expectedMessageFromAspect: aspect.annotationText,
   });
 });
 
@@ -250,8 +256,8 @@ test('Port 80 open to the public should generate no errors when a port specific 
   testAspect(new cdk.App(), aspect, {
     source: ec2.Peer.anyIpv4(),
     port: ec2.Port.tcp(80),
-    expectedMsg: aspect.annotationText,
-    expectedResult: false,
+    expectedMessageFromAspect: aspect.annotationText,
+    shouldHaveGeneratedMessage: false,
   });
 });
 
@@ -261,7 +267,7 @@ test('Port 22 open to the public should generate an error when CISAwsFoundationB
   testAspect(new cdk.App(), aspect, {
     source: ec2.Peer.anyIpv4(),
     port: ec2.Port.tcp(22),
-    expectedMsg: aspect.annotationText,
+    expectedMessageFromAspect: aspect.annotationText,
   });
 });
 
@@ -271,7 +277,7 @@ test('Port 3389 open to the public should generate an error when CISAwsFoundatio
   testAspect(new cdk.App(), aspect, {
     source: ec2.Peer.anyIpv4(),
     port: ec2.Port.tcp(3389),
-    expectedMsg: aspect.annotationText,
+    expectedMessageFromAspect: aspect.annotationText,
   });
 });
 
@@ -285,7 +291,7 @@ test('Modifying the annotation text should result in the expected text appearing
   testAspect(new cdk.App(), aspect, {
     source: ec2.Peer.anyIpv4(),
     port: ec2.Port.tcp(22),
-    expectedMsg: aspect.annotationText,
+    expectedMessageFromAspect: aspect.annotationText,
   });
 });
 
@@ -300,8 +306,8 @@ test('A custom aspect using the base aspect class should create the expected ann
   testAspect(new cdk.App(), aspect, {
     source: ec2.Peer.ipv4('10.1.0.0/16'),
     port: ec2.Port.tcp(5985),
-    expectedMsg: aspect.annotationText,
-    expectedType: MsgTypes.WARNING,
+    expectedMessageFromAspect: aspect.annotationText,
+    expectedMessageType: MsgTypes.WARNING,
   });
 });
 
@@ -311,7 +317,7 @@ test('Port 20 open to the public should generate an error when AWSRestrictedComm
   testAspect(new cdk.App(), aspect, {
     source: ec2.Peer.anyIpv4(),
     port: ec2.Port.tcp(20),
-    expectedMsg: aspect.annotationText,
+    expectedMessageFromAspect: aspect.annotationText,
   });
 });
 
@@ -325,7 +331,7 @@ test('When anySource is true for an aspect a port matching the aspect generates 
   testAspect(new cdk.App(), aspect, {
     source: ec2.Peer.ipv4('10.1.0.0/16'),
     port: ec2.Port.tcp(5985),
-    expectedMsg: aspect.annotationText,
+    expectedMessageFromAspect: aspect.annotationText,
   });
 });
 
@@ -342,7 +348,7 @@ test('When an aspect restricts a security group and a rule uses that source secu
   testAspect(app, aspect, {
     source: sourceSg,
     port: ec2.Port.tcp(5985),
-    expectedMsg: aspect.annotationText,
+    expectedMessageFromAspect: aspect.annotationText,
   });
 });
 
@@ -359,7 +365,7 @@ test('When an aspect restricts a port with any source and a rule uses a source s
   testAspect(app, aspect, {
     source: sourceSg,
     port: ec2.Port.tcp(5985),
-    expectedMsg: aspect.annotationText,
+    expectedMessageFromAspect: aspect.annotationText,
   });
 });
 
@@ -375,7 +381,105 @@ test('When an aspect restricts a port with a cidr source and a rule uses a sourc
   testAspect(app, aspect, {
     source: sourceSg,
     port: ec2.Port.tcp(5985),
-    expectedMsg: aspect.annotationText,
-    expectedResult: false,
+    expectedMessageFromAspect: aspect.annotationText,
+    shouldHaveGeneratedMessage: false,
+  });
+});
+
+let commonWebPorts = [80, 443, 8080, 8443];
+commonWebPorts.forEach(port => {
+  test('Port ' + port + ' open to the public should generate an error when NoPublicIngressCommonWebPortsAspect is applied with defaults', () => {
+    const aspect = new NoPublicIngressCommonWebPortsAspect();
+
+    testAspect(new cdk.App(), aspect, {
+      source: ec2.Peer.anyIpv4(),
+      port: ec2.Port.tcp(port),
+      expectedMessageFromAspect: aspect.annotationText,
+    });
+  });
+
+  test('Port ' + port + ' open to the ANY source should generate an error when NoIngressCommonWebPortsAspect is applied with defaults', () => {
+    const aspect = new NoIngressCommonWebPortsAspect();
+
+    testAspect(new cdk.App(), aspect, {
+      source: ec2.Peer.anyIpv4(),
+      port: ec2.Port.tcp(port),
+      expectedMessageFromAspect: aspect.annotationText,
+    });
+  });
+});
+
+let commonDbPorts = [3306, 5432, 1521, 1433];
+commonDbPorts.forEach(port => {
+  test('Port ' + port + ' open to the public should generate an error when NoPublicIngressCommonRelationalDBPortsAspect is applied with defaults', () => {
+    const aspect = new NoPublicIngressCommonRelationalDBPortsAspect();
+
+    testAspect(new cdk.App(), aspect, {
+      source: ec2.Peer.anyIpv4(),
+      port: ec2.Port.tcp(port),
+      expectedMessageFromAspect: aspect.annotationText,
+    });
+  });
+
+  test('Port ' + port + ' open to the ANY source should generate an error when NoIngressCommonRelationalDBPortsAspect is applied with defaults', () => {
+    const aspect = new NoIngressCommonRelationalDBPortsAspect();
+
+    testAspect(new cdk.App(), aspect, {
+      source: ec2.Peer.anyIpv4(),
+      port: ec2.Port.tcp(port),
+      expectedMessageFromAspect: aspect.annotationText,
+    });
+  });
+});
+
+// for commonManagementPorts create tests for both NoPublicIngressCommonManagementPortsAspect and NoIngressCommonManagementPortsAspect
+let commonManagementPorts = [22, 3389, 5985, 5986];
+commonManagementPorts.forEach(port => {
+  test('Port ' + port + ' open to the public should generate an error when NoPublicIngressCommonManagementPortsAspect is applied with defaults', () => {
+    const aspect = new NoPublicIngressCommonManagementPortsAspect();
+
+    testAspect(new cdk.App(), aspect, {
+      source: ec2.Peer.anyIpv4(),
+      port: ec2.Port.tcp(port),
+      expectedMessageFromAspect: aspect.annotationText,
+    });
+  });
+
+  test('Port ' + port + ' open to the ANY source should generate an error when NoIngressCommonManagementPortsAspect is applied with defaults', () => {
+    const aspect = new NoIngressCommonManagementPortsAspect();
+
+    testAspect(new cdk.App(), aspect, {
+      source: ec2.Peer.anyIpv4(),
+      port: ec2.Port.tcp(port),
+      expectedMessageFromAspect: aspect.annotationText,
+    });
+  });
+});
+
+test('Adding an aspect, not adding any restrictions, overriding restricted CIDRS, and not setting anySource to true should generate no annotations', () => {
+  const aspect = new SecurityGroupAspectBase({
+    annotationText: 'This is a custom error message for a restricted port.',
+    restrictedCidrs: [],
+    ports: [5985],
+  });
+
+  testAspect(new cdk.App(), aspect, {
+    source: ec2.Peer.anyIpv4(),
+    port: ec2.Port.tcp(5985),
+    shouldHaveGeneratedMessage: false,
+    expectedMessageFromAspect: aspect.annotationText,
+  });
+});
+
+test('Creating a custom aspect with the default base aspect class and not defining any restricted sources should generate no annotations', () => {
+  const aspect = new SecurityGroupAspectBase({
+    annotationText: 'This is a custom error message for a restricted port.',
+  });
+
+  testAspect(new cdk.App(), aspect, {
+    source: ec2.Peer.anyIpv4(),
+    port: ec2.Port.tcp(5985),
+    shouldHaveGeneratedMessage: false,
+    expectedMessageFromAspect: aspect.annotationText,
   });
 });

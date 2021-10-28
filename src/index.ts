@@ -29,10 +29,10 @@ export interface IAspectPropsBase {
 }
 
 /**
- * The extended aspect properties available only to the SecurityGroupAspectBase.
+ * The extended aspect properties available only to the base security aspects.
  *
  * These additional properties shouldn't be changed in aspects that already have clearly defined goals.
- * So, this extended properties interface is applied selectively to the SecurityGroupAspectBase.
+ * So, this extended properties interface is applied selectively to the base aspects.
  */
 export interface IAspectPropsExtended extends IAspectPropsBase {
   /**
@@ -191,8 +191,7 @@ export function checkRules(args: IRuleCheckArgs) {
 /**
  * The base class for all security group aspects in the library.
  *
- * By default this will restrict all ports that use the typical "any" CIDRs on AWS (0.0.0.0/0 and ::/0) and
- * will generate an error in the CDK metadata with a generic error about a blocked security group rule.
+ * By default this will not restrict anything.
  */
 export class SecurityGroupAspectBase implements cdk.IAspect {
   public annotationText: string;
@@ -206,7 +205,7 @@ export class SecurityGroupAspectBase implements cdk.IAspect {
     this.annotationType = props?.annotationType ?? AnnotationType.ERROR;
     this.annotationText = props?.annotationText ?? 'A security group rule was blocked by an aspect applied to this stack.';
     this.ports = props?.ports;
-    this.restrictedCidrs = props?.restrictedCidrs ?? ['0.0.0.0/0', '::/0'];
+    this.restrictedCidrs = props?.restrictedCidrs;
     this.restrictedSGs = props?.restrictedSGs;
     this.anySource = props?.anySource ?? false;
   }
@@ -225,11 +224,24 @@ export class SecurityGroupAspectBase implements cdk.IAspect {
 }
 
 /**
- * Aspect to determine if a security group allows inbound traffic from the public internet to any port.
+ * The base aspect to determine if a security group allows inbound traffic from the public internet to any port.
  *
- * This inherits everything from the base SecurityGroupAspectBase class and modifies the default annotation text.
+ * This inherits everything from the base SecurityGroupAspectBase class and sets a default set of CIDRS that match allowing all IPs on AWS.
  */
-export class NoPublicIngressAspect extends SecurityGroupAspectBase implements cdk.IAspect {
+export class NoPublicIngressAspectBase extends SecurityGroupAspectBase implements cdk.IAspect {
+  constructor(props?: IAspectPropsBase) {
+    super(props);
+
+    this.restrictedCidrs = ['0.0.0.0/0', '::/0'];
+  }
+}
+
+/**
+ * The same as the base NoPublicIngressAspectBase but with a more descriptive annotation.
+ *
+ * Blocks the ANY port from the public internet.
+ */
+export class NoPublicIngressAspect extends NoPublicIngressAspectBase implements cdk.IAspect {
   constructor(props?: IAspectPropsBase) {
     super(props);
 
@@ -240,11 +252,11 @@ export class NoPublicIngressAspect extends SecurityGroupAspectBase implements cd
 /**
  * Aspect to determine if a security group allows inbound traffic from the public internet to the SSH port.
  */
-export class NoPublicIngressSSHAspect extends SecurityGroupAspectBase {
+export class NoPublicIngressSSHAspect extends NoPublicIngressAspectBase {
   constructor(props?: IAspectPropsBase) {
     super(props);
 
-    this.annotationText = props?.annotationText ?? 'NoPublicIngressSSHAspect: A security group rule allows public access to a restricted port: 22 (SSH)';
+    this.annotationText = props?.annotationText ?? 'NoPublicIngressSSHAspect: A security group rule allows access to a restricted port from public IPs (0.0.0.0/0): 22 (SSH)';
     this.ports = [22];
   }
 }
@@ -267,11 +279,11 @@ export class CISAwsFoundationBenchmark4Dot1Aspect extends NoPublicIngressSSHAspe
 /**
  * Aspect to determine if a security group allows inbound traffic from the public internet to the RDP port.
  */
-export class NoPublicIngressRDPAspect extends SecurityGroupAspectBase {
+export class NoPublicIngressRDPAspect extends NoPublicIngressAspectBase {
   constructor(props?: IAspectPropsBase) {
     super(props);
 
-    this.annotationText = props?.annotationText ?? 'NoPublicIngressRDPAspect: A security group rule allows public access to a restricted port: 3389 (RDP)';
+    this.annotationText = props?.annotationText ?? 'NoPublicIngressRDPAspect: A security group rule allows access to a restricted port from public IPs (0.0.0.0/0): 3389 (RDP)';
     this.ports = [3389];
   }
 }
@@ -294,7 +306,7 @@ export class CISAwsFoundationBenchmark4Dot2Aspect extends NoPublicIngressRDPAspe
 /**
  * Restricted common ports based on AWS Config rule https://docs.aws.amazon.com/config/latest/developerguide/restricted-common-ports.html
  */
-export class AWSRestrictedCommonPortsAspect extends SecurityGroupAspectBase {
+export class AWSRestrictedCommonPortsAspect extends NoPublicIngressAspectBase {
   constructor(props?: IAspectPropsBase) {
     super(props);
 
@@ -305,6 +317,141 @@ export class AWSRestrictedCommonPortsAspect extends SecurityGroupAspectBase {
       3306,
       4333,
     ];
-    this.annotationText = props?.annotationText ?? 'AWSRestrictedCommonPortsAspect: A security group rule allows access to a restricted port: 20, 21, 3389, 3306, 4333';
+    this.annotationText = props?.annotationText ?? 'AWSRestrictedCommonPortsAspect: A security group rule allows access to a restricted port from public IPs (0.0.0.0/0): 20, 21, 3389, 3306, 4333';
+  }
+}
+
+/**
+ * Aspect to restrict public access to common management ports.
+ *
+ * 22 - SSH
+ * 3389 - RDP
+ * 5985 - WinRM
+ * 5986 - WinRM HTTPS
+ */
+export class NoPublicIngressCommonManagementPortsAspect extends NoPublicIngressAspectBase {
+  constructor(props?: IAspectPropsBase) {
+    super(props);
+
+    this.ports = [
+      22,
+      3389,
+      5985,
+      5986,
+    ];
+    this.annotationText = props?.annotationText ?? 'NoPublicIngressCommonManagementPortsAspect: A security group rule allows access to a restricted port from public IPs (0.0.0.0/0): 22, 3389, 5985, 5986';
+  }
+}
+
+/**
+ * Aspect to restrict any access to common management ports.
+ *
+ * 22 - SSH
+ * 3389 - RDP
+ * 5985 - WinRM
+ * 5986 - WinRM HTTPS
+ */
+export class NoIngressCommonManagementPortsAspect extends SecurityGroupAspectBase {
+  constructor(props?: IAspectPropsBase) {
+    super(props);
+
+    this.ports = [
+      22,
+      3389,
+      5985,
+      5986,
+    ];
+    this.annotationText = props?.annotationText ?? 'NoIngressCommonManagementPortsAspect: A security group rule allows access to a restricted port: 22, 3389, 5985, 5986';
+    this.anySource = true;
+  }
+}
+
+/**
+ * Aspect to restrict public access to common relational DB ports.
+ *
+ * 3306 - MySQL
+ * 5432 - PostgreSQL
+ * 1521 - Oracle
+ * 1433 - SQL Server
+ */
+export class NoPublicIngressCommonRelationalDBPortsAspect extends NoPublicIngressAspectBase {
+  constructor(props?: IAspectPropsBase) {
+    super(props);
+
+    this.ports = [
+      3306,
+      5432,
+      1521,
+      1433,
+    ];
+    this.annotationText = props?.annotationText ?? 'NoPublicIngressCommonRelationalDBPortsAspect: A security group rule allows access to a restricted port from public IPs (0.0.0.0/0): 3306, 5432, 1521, 1433';
+  }
+}
+
+/**
+ * Aspect to restrict any access to common relational DB ports.
+ *
+ * 3306 - MySQL
+ * 5432 - PostgreSQL
+ * 1521 - Oracle
+ * 1433 - SQL Server
+ */
+export class NoIngressCommonRelationalDBPortsAspect extends SecurityGroupAspectBase {
+  constructor(props?: IAspectPropsBase) {
+    super(props);
+
+    this.ports = [
+      3306,
+      5432,
+      1521,
+      1433,
+    ];
+    this.annotationText = props?.annotationText ?? 'NoIngressCommonRelationalDBPortsAspect: A security group rule allows access to a restricted port: 3306, 5432, 1521, 1433';
+    this.anySource = true;
+  }
+}
+
+/**
+ * Aspect to restrict public access to common web ports.
+ *
+ * 80 - HTTP
+ * 443 - HTTPS
+ * 8080 - HTTP
+ * 8443 - HTTPS
+ */
+export class NoPublicIngressCommonWebPortsAspect extends NoPublicIngressAspectBase {
+  constructor(props?: IAspectPropsBase) {
+    super(props);
+
+    this.ports = [
+      80,
+      443,
+      8080,
+      8443,
+    ];
+    this.annotationText = props?.annotationText ?? 'NoPublicIngressCommonWebPortsAspect: A security group rule allows access to a restricted port from public IPs (0.0.0.0/0): 80, 443, 8080, 8443';
+  }
+}
+
+/**
+ * Aspect to restrict any access to common web ports.
+ *
+ * 80 - HTTP
+ * 443 - HTTPS
+ * 8080 - HTTP
+ * 8443 - HTTPS
+ */
+export class NoIngressCommonWebPortsAspect extends SecurityGroupAspectBase {
+  constructor(props?: IAspectPropsBase) {
+    super(props);
+
+    this.ports = [
+      80,
+      443,
+      8080,
+      8443,
+    ];
+    this.annotationText = props?.annotationText ?? 'NoIngressCommonWebPortsAspect: A security group rule allows access to a restricted port: 80, 443, 8080, 8443';
+    this.anySource = true;
   }
 }
