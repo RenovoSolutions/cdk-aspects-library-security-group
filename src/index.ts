@@ -69,9 +69,14 @@ export interface IAspectPropsExtended extends IAspectPropsBase {
 }
 
 /**
+ * @function anyInRange
  * Function to check if a number is in a range.
  *
  * Useful for determining if a port number in a security group is in part of a range since rules take a to and from port.
+ *
+ * @param num The number to check.
+ * @param from The starting number of the range.
+ * @param to The ending number of the range.
  */
 export function anyInRange(num: number[], from: number, to: number) {
   for (const n of num) {
@@ -82,8 +87,14 @@ export function anyInRange(num: number[], from: number, to: number) {
   return false;
 }
 
+
 /**
- * Function to annotate a node based on a defined annotation type.
+ * @function annotate
+ * Function to annotate a construct node based on a defined annotation type.
+ *
+ * @param {cdk.IConstruct} node The construct node to annotate.
+ * @param {string} annotationText The annotation text to use for the annotation.
+ * @param {AnnotationType} annotationType The annotation type to use for the annotation.
  */
 export function annotate(node:cdk.IConstruct, annotationText:string | undefined, annotationType:AnnotationType | undefined) {
   annotationText = annotationText || 'A security group rule was blocked by an aspect applied to this stack.';
@@ -102,6 +113,10 @@ export function annotate(node:cdk.IConstruct, annotationText:string | undefined,
   }
 }
 
+/**
+ * The arguments for the checkRules function.
+ * Extends the IAspectPropsBase interface which includes additional properties that can be used as args.
+ */
 export interface IRuleCheckArgs extends IAspectPropsExtended {
   /**
    * The node to check.
@@ -110,9 +125,13 @@ export interface IRuleCheckArgs extends IAspectPropsExtended {
 }
 
 /**
+ * @function checkRules
+ *
+ * @param {IRuleCheckArgs} args The arguments for the checkRules function.
+ *
  * Function to check a node for security group rules and determine if they breaks the rules of a given aspect.
  */
-function checkRules(args: IRuleCheckArgs) {
+export function checkRules(args: IRuleCheckArgs) {
   if (args.node instanceof ec2.CfnSecurityGroup) {
     checkInlineRules(cdk.Stack.of(args.node).resolve(args.node.securityGroupIngress));
   } else if (args.node instanceof ec2.CfnSecurityGroupIngress) {

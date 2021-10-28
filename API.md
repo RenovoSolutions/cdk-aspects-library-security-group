@@ -387,6 +387,10 @@ The restricted source security groups for the given port.
 
 - *Implemented By:* [`@renovosolutions/cdk-aspects-library-security-group.IRuleCheckArgs`](#@renovosolutions/cdk-aspects-library-security-group.IRuleCheckArgs)
 
+The arguments for the checkRules function.
+
+Extends the IAspectPropsBase interface which includes additional properties that can be used as args.
+
 
 #### Properties <a name="Properties"></a>
 
