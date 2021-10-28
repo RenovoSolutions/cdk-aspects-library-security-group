@@ -208,13 +208,13 @@ public readonly annotationType: AnnotationType;
 
 ---
 
-##### `restrictedCidrs`<sup>Required</sup> <a name="@renovosolutions/cdk-aspects-library-security-group.SecurityGroupAspectBase.property.restrictedCidrs"></a>
+##### `anySource`<sup>Required</sup> <a name="@renovosolutions/cdk-aspects-library-security-group.SecurityGroupAspectBase.property.anySource"></a>
 
 ```typescript
-public readonly restrictedCidrs: string[];
+public readonly anySource: boolean;
 ```
 
-- *Type:* `string`[]
+- *Type:* `boolean`
 
 ---
 
@@ -228,12 +228,32 @@ public readonly ports: number[];
 
 ---
 
+##### `restrictedCidrs`<sup>Optional</sup> <a name="@renovosolutions/cdk-aspects-library-security-group.SecurityGroupAspectBase.property.restrictedCidrs"></a>
+
+```typescript
+public readonly restrictedCidrs: string[];
+```
+
+- *Type:* `string`[]
+
+---
+
+##### `restrictedSGs`<sup>Optional</sup> <a name="@renovosolutions/cdk-aspects-library-security-group.SecurityGroupAspectBase.property.restrictedSGs"></a>
+
+```typescript
+public readonly restrictedSGs: string[];
+```
+
+- *Type:* `string`[]
+
+---
+
 
 ## Protocols <a name="Protocols"></a>
 
 ### IAspectPropsBase <a name="@renovosolutions/cdk-aspects-library-security-group.IAspectPropsBase"></a>
 
-- *Implemented By:* [`@renovosolutions/cdk-aspects-library-security-group.IAspectPropsBase`](#@renovosolutions/cdk-aspects-library-security-group.IAspectPropsBase), [`@renovosolutions/cdk-aspects-library-security-group.IAspectPropsExtended`](#@renovosolutions/cdk-aspects-library-security-group.IAspectPropsExtended)
+- *Implemented By:* [`@renovosolutions/cdk-aspects-library-security-group.IAspectPropsBase`](#@renovosolutions/cdk-aspects-library-security-group.IAspectPropsBase), [`@renovosolutions/cdk-aspects-library-security-group.IAspectPropsExtended`](#@renovosolutions/cdk-aspects-library-security-group.IAspectPropsExtended), [`@renovosolutions/cdk-aspects-library-security-group.IRuleCheckArgs`](#@renovosolutions/cdk-aspects-library-security-group.IRuleCheckArgs)
 
 The base aspect properties available to any aspect.
 
@@ -271,7 +291,7 @@ The annotation type to use for the annotation.
 
 - *Extends:* [`@renovosolutions/cdk-aspects-library-security-group.IAspectPropsBase`](#@renovosolutions/cdk-aspects-library-security-group.IAspectPropsBase)
 
-- *Implemented By:* [`@renovosolutions/cdk-aspects-library-security-group.IAspectPropsExtended`](#@renovosolutions/cdk-aspects-library-security-group.IAspectPropsExtended)
+- *Implemented By:* [`@renovosolutions/cdk-aspects-library-security-group.IAspectPropsExtended`](#@renovosolutions/cdk-aspects-library-security-group.IAspectPropsExtended), [`@renovosolutions/cdk-aspects-library-security-group.IRuleCheckArgs`](#@renovosolutions/cdk-aspects-library-security-group.IRuleCheckArgs)
 
 The extended aspect properties available only to the SecurityGroupAspectBase.
 
@@ -305,6 +325,21 @@ The annotation type to use for the annotation.
 
 ---
 
+##### `anySource`<sup>Optional</sup> <a name="@renovosolutions/cdk-aspects-library-security-group.IAspectPropsExtended.property.anySource"></a>
+
+```typescript
+public readonly anySource: boolean;
+```
+
+- *Type:* `boolean`
+- *Default:* false
+
+Whether any source is valid.
+
+This will ignore all other restrictions and only check the port.
+
+---
+
 ##### `ports`<sup>Optional</sup> <a name="@renovosolutions/cdk-aspects-library-security-group.IAspectPropsExtended.property.ports"></a>
 
 ```typescript
@@ -316,7 +351,7 @@ public readonly ports: number[];
 
 The restricted port.
 
-Defaults to all ports.
+Defaults to restricting all ports and only checking sources.
 
 ---
 
@@ -330,6 +365,120 @@ public readonly restrictedCidrs: string[];
 - *Default:* ['0.0.0.0/0', '::/0']
 
 The restricted CIDRs for the given port.
+
+---
+
+##### `restrictedSGs`<sup>Optional</sup> <a name="@renovosolutions/cdk-aspects-library-security-group.IAspectPropsExtended.property.restrictedSGs"></a>
+
+```typescript
+public readonly restrictedSGs: string[];
+```
+
+- *Type:* `string`[]
+- *Default:* undefined
+
+The restricted source security groups for the given port.
+
+---
+
+### IRuleCheckArgs <a name="@renovosolutions/cdk-aspects-library-security-group.IRuleCheckArgs"></a>
+
+- *Extends:* [`@renovosolutions/cdk-aspects-library-security-group.IAspectPropsExtended`](#@renovosolutions/cdk-aspects-library-security-group.IAspectPropsExtended)
+
+- *Implemented By:* [`@renovosolutions/cdk-aspects-library-security-group.IRuleCheckArgs`](#@renovosolutions/cdk-aspects-library-security-group.IRuleCheckArgs)
+
+
+#### Properties <a name="Properties"></a>
+
+##### `annotationText`<sup>Optional</sup> <a name="@renovosolutions/cdk-aspects-library-security-group.IRuleCheckArgs.property.annotationText"></a>
+
+```typescript
+public readonly annotationText: string;
+```
+
+- *Type:* `string`
+
+The annotation text to use for the annotation.
+
+---
+
+##### `annotationType`<sup>Optional</sup> <a name="@renovosolutions/cdk-aspects-library-security-group.IRuleCheckArgs.property.annotationType"></a>
+
+```typescript
+public readonly annotationType: AnnotationType;
+```
+
+- *Type:* [`@renovosolutions/cdk-aspects-library-security-group.AnnotationType`](#@renovosolutions/cdk-aspects-library-security-group.AnnotationType)
+
+The annotation type to use for the annotation.
+
+---
+
+##### `anySource`<sup>Optional</sup> <a name="@renovosolutions/cdk-aspects-library-security-group.IRuleCheckArgs.property.anySource"></a>
+
+```typescript
+public readonly anySource: boolean;
+```
+
+- *Type:* `boolean`
+- *Default:* false
+
+Whether any source is valid.
+
+This will ignore all other restrictions and only check the port.
+
+---
+
+##### `ports`<sup>Optional</sup> <a name="@renovosolutions/cdk-aspects-library-security-group.IRuleCheckArgs.property.ports"></a>
+
+```typescript
+public readonly ports: number[];
+```
+
+- *Type:* `number`[]
+- *Default:* undefined
+
+The restricted port.
+
+Defaults to restricting all ports and only checking sources.
+
+---
+
+##### `restrictedCidrs`<sup>Optional</sup> <a name="@renovosolutions/cdk-aspects-library-security-group.IRuleCheckArgs.property.restrictedCidrs"></a>
+
+```typescript
+public readonly restrictedCidrs: string[];
+```
+
+- *Type:* `string`[]
+- *Default:* ['0.0.0.0/0', '::/0']
+
+The restricted CIDRs for the given port.
+
+---
+
+##### `restrictedSGs`<sup>Optional</sup> <a name="@renovosolutions/cdk-aspects-library-security-group.IRuleCheckArgs.property.restrictedSGs"></a>
+
+```typescript
+public readonly restrictedSGs: string[];
+```
+
+- *Type:* `string`[]
+- *Default:* undefined
+
+The restricted source security groups for the given port.
+
+---
+
+##### `node`<sup>Required</sup> <a name="@renovosolutions/cdk-aspects-library-security-group.IRuleCheckArgs.property.node"></a>
+
+```typescript
+public readonly node: IConstruct;
+```
+
+- *Type:* [`@aws-cdk/core.IConstruct`](#@aws-cdk/core.IConstruct)
+
+The node to check.
 
 ---
 

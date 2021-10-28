@@ -9,6 +9,7 @@ A CDK library containing EC2 security group related [CDK Aspects](https://docs.a
   - Disallow public access to SSH or RDP per CIS Benchmark guidelines and general good practice
 - Create any other aspect using the base security group aspect class.
 - By default aspects generate errors in the CDK metadata which the deployment or synth process will find, but this can be changed with the `annotationType` property
+- All default provided aspects restrict based on the public access CIDRs (`0.0.0.0/0` and `::/0`) but you can also defined aspects with any set of restricted CIDRs or security group IDs you like
 
 ## API Doc
 See [API](API.md)
