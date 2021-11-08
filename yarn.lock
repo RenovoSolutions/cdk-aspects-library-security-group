@@ -2068,11 +2068,6 @@ decamelize@^1.1.0:
   resolved "https://registry.yarnpkg.com/decamelize/-/decamelize-1.2.0.tgz#f6534d15148269b20352e7bee26f501f9a191290"
   integrity sha1-9lNNFRSCabIDUue+4m9QH5oZEpA=
 
-decamelize@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/decamelize/-/decamelize-4.0.0.tgz#aa472d7bf660eb15f3494efd531cab7f2a709837"
-  integrity sha512-9iE1PgSik9HeIIw2JO94IidnE3eBoQrFJ3w7sFuzSX4DpmZ3v5sZpUiV5Swcf6mQEF+Y0ru8Neo+p+nyh2J+hQ==
-
 decamelize@^5.0.1:
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/decamelize/-/decamelize-5.0.1.tgz#db11a92e58c741ef339fb0a2868d8a06a9a7b1e9"
@@ -2464,9 +2459,9 @@ eslint-visitor-keys@^2.0.0:
   integrity sha512-0rSmRBzXgDzIsD6mGdJgevzgezI534Cer5L/vyMX0kHzT/jiB43jRhd9YUlMGYLQy2zprNmoT8qasCGtY+QaKw==
 
 eslint-visitor-keys@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/eslint-visitor-keys/-/eslint-visitor-keys-3.0.0.tgz#e32e99c6cdc2eb063f204eda5db67bfe58bb4186"
-  integrity sha512-mJOZa35trBTb3IyRmo8xmKBZlxf+N7OnUl4+ZhJHs/r+0770Wh/LEACE2pqMGMe27G/4y8P2bYGk4J70IC5k1Q==
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/eslint-visitor-keys/-/eslint-visitor-keys-3.1.0.tgz#eee4acea891814cda67a7d8812d9647dd0179af2"
+  integrity sha512-yWJFpu4DtjsWKkt5GeNBBuZMlNcYVs6vRCLoCVEJrTjaSB6LC98gFipNK/erM2Heg/E8mIK+hXG/pJMLK+eRZA==
 
 eslint@^8.2.0:
   version "8.2.0"
@@ -4084,10 +4079,10 @@ jsii-diff@^1.42.0:
     typescript "~3.9.10"
     yargs "^16.2.0"
 
-jsii-docgen@^3.8.22:
-  version "3.8.22"
-  resolved "https://registry.yarnpkg.com/jsii-docgen/-/jsii-docgen-3.8.22.tgz#1a2391d45e391098a89082e20cb2a27d22af02f0"
-  integrity sha512-LqTM+ziXLwstt8EN3nKwfTm85FNT/HWd0EfRmmAp1nI3GFWCQeSEhpg83ILLvKq9cz7rfFzZncs5AfSk8j09Hw==
+jsii-docgen@^3.8.23:
+  version "3.8.23"
+  resolved "https://registry.yarnpkg.com/jsii-docgen/-/jsii-docgen-3.8.23.tgz#f3b2eb1e3755ab2b3e695a82c7083ab4af4bc300"
+  integrity sha512-Qe8p3WY5grkfZ/xRfme4hExpVPJQvla4BDRnAnzBscq4fH0oBidAOlPcmJmAbsMEXUYzXFlQv62jMWCXWH6YQg==
   dependencies:
     "@jsii/spec" "^1.42.0"
     case "^1.6.3"
@@ -5215,14 +5210,14 @@ progress@^2.0.0, progress@^2.0.3:
   resolved "https://registry.yarnpkg.com/progress/-/progress-2.0.3.tgz#7e8cf8d8f5b8f239c1bc68beb4eb78567d572ef8"
   integrity sha512-7PiHtLll5LdnKIMw100I+8xJXR5gW2QwWYkT6iJva0bXitZKa/XMrSbdmg3r2Xnaidz9Qumd0VPaMrZlF9V9sA==
 
-projen@^0.31.8:
-  version "0.31.12"
-  resolved "https://registry.yarnpkg.com/projen/-/projen-0.31.12.tgz#854015af1d7bb2b842720d0e2e42eaa4d70b39bc"
-  integrity sha512-PLmf58kjUblEBXnGbAQBDl+KHJMQg5lAPHAYwjBjzXkPXTlzDU6wWh8e8b4kWnoUQGGQ+LJOvWOmE1F7NKN5gQ==
+projen@^0.33.1:
+  version "0.33.1"
+  resolved "https://registry.yarnpkg.com/projen/-/projen-0.33.1.tgz#c247d213b50d032ca4e1bb04f58b4fadc73186ba"
+  integrity sha512-q4qJ3YMMONhlPxJUCSo+n9Yl2/mVe9eS8zyCNFiFAnpRkKRmSyPkKGUsnfdSliCTTfE2wdfKQY0/aYsouoyoMA==
   dependencies:
     "@iarna/toml" "^2.2.5"
+    case "^1.6.3"
     chalk "^4.1.2"
-    decamelize "^4.0.0"
     fs-extra "^9.1.0"
     glob "^7"
     ini "^2.0.0"
