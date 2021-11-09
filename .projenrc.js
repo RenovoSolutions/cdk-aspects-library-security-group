@@ -2,7 +2,7 @@ const { AwsCdkConstructLibrary, NpmAccess } = require('projen');
 const project = new AwsCdkConstructLibrary({
   author: 'Renovo Solutions',
   authorAddress: 'webmaster+cdk@renovo1.com',
-  cdkVersion: '1.131.0',
+  cdkVersion: '1.132.0',
   defaultReleaseBranch: 'master',
   name: '@renovosolutions/cdk-aspects-library-security-group',
   description: 'A library of CDK aspects applying to security groups.',
