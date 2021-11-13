@@ -1,4 +1,5 @@
 # cdk-aspects-library-security-group
+[![build](https://github.com/RenovoSolutions/cdk-aspects-library-security-group/actions/workflows/build.yml/badge.svg)](https://github.com/RenovoSolutions/cdk-aspects-library-security-group/actions/workflows/build.yml)
 
 A CDK library containing EC2 security group related [CDK Aspects](https://docs.aws.amazon.com/cdk/latest/guide/aspects.html) and the ability to define custom aspects.
 
