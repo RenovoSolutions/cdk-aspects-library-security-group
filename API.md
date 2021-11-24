@@ -1,6 +1,247 @@
 # API Reference <a name="API Reference"></a>
 
 
+## Structs <a name="Structs"></a>
+
+### AspectPropsBase <a name="@renovosolutions/cdk-aspects-library-security-group.AspectPropsBase"></a>
+
+The base aspect properties available to any aspect.
+
+JSII doesn't support an Omit when extending interfaces, so we create a base class to extend from.
+This base class meets the needed properties for all non-base aspects.
+
+#### Initializer <a name="[object Object].Initializer"></a>
+
+```typescript
+import { AspectPropsBase } from '@renovosolutions/cdk-aspects-library-security-group'
+
+const aspectPropsBase: AspectPropsBase = { ... }
+```
+
+##### `annotationText`<sup>Optional</sup> <a name="@renovosolutions/cdk-aspects-library-security-group.AspectPropsBase.property.annotationText"></a>
+
+```typescript
+public readonly annotationText: string;
+```
+
+- *Type:* `string`
+
+The annotation text to use for the annotation.
+
+---
+
+##### `annotationType`<sup>Optional</sup> <a name="@renovosolutions/cdk-aspects-library-security-group.AspectPropsBase.property.annotationType"></a>
+
+```typescript
+public readonly annotationType: AnnotationType;
+```
+
+- *Type:* [`@renovosolutions/cdk-aspects-library-security-group.AnnotationType`](#@renovosolutions/cdk-aspects-library-security-group.AnnotationType)
+
+The annotation type to use for the annotation.
+
+---
+
+### AspectPropsExtended <a name="@renovosolutions/cdk-aspects-library-security-group.AspectPropsExtended"></a>
+
+The extended aspect properties available only to the base security aspects.
+
+These additional properties shouldn't be changed in aspects that already have clearly defined goals.
+So, this extended properties interface is applied selectively to the base aspects.
+
+#### Initializer <a name="[object Object].Initializer"></a>
+
+```typescript
+import { AspectPropsExtended } from '@renovosolutions/cdk-aspects-library-security-group'
+
+const aspectPropsExtended: AspectPropsExtended = { ... }
+```
+
+##### `annotationText`<sup>Optional</sup> <a name="@renovosolutions/cdk-aspects-library-security-group.AspectPropsExtended.property.annotationText"></a>
+
+```typescript
+public readonly annotationText: string;
+```
+
+- *Type:* `string`
+
+The annotation text to use for the annotation.
+
+---
+
+##### `annotationType`<sup>Optional</sup> <a name="@renovosolutions/cdk-aspects-library-security-group.AspectPropsExtended.property.annotationType"></a>
+
+```typescript
+public readonly annotationType: AnnotationType;
+```
+
+- *Type:* [`@renovosolutions/cdk-aspects-library-security-group.AnnotationType`](#@renovosolutions/cdk-aspects-library-security-group.AnnotationType)
+
+The annotation type to use for the annotation.
+
+---
+
+##### `anySource`<sup>Optional</sup> <a name="@renovosolutions/cdk-aspects-library-security-group.AspectPropsExtended.property.anySource"></a>
+
+```typescript
+public readonly anySource: boolean;
+```
+
+- *Type:* `boolean`
+- *Default:* false
+
+Whether any source is valid.
+
+This will ignore all other restrictions and only check the port.
+
+---
+
+##### `ports`<sup>Optional</sup> <a name="@renovosolutions/cdk-aspects-library-security-group.AspectPropsExtended.property.ports"></a>
+
+```typescript
+public readonly ports: number[];
+```
+
+- *Type:* `number`[]
+- *Default:* undefined
+
+The restricted port.
+
+Defaults to restricting all ports and only checking sources.
+
+---
+
+##### `restrictedCidrs`<sup>Optional</sup> <a name="@renovosolutions/cdk-aspects-library-security-group.AspectPropsExtended.property.restrictedCidrs"></a>
+
+```typescript
+public readonly restrictedCidrs: string[];
+```
+
+- *Type:* `string`[]
+- *Default:* ['0.0.0.0/0', '::/0']
+
+The restricted CIDRs for the given port.
+
+---
+
+##### `restrictedSGs`<sup>Optional</sup> <a name="@renovosolutions/cdk-aspects-library-security-group.AspectPropsExtended.property.restrictedSGs"></a>
+
+```typescript
+public readonly restrictedSGs: string[];
+```
+
+- *Type:* `string`[]
+- *Default:* undefined
+
+The restricted source security groups for the given port.
+
+---
+
+### RuleCheckArgs <a name="@renovosolutions/cdk-aspects-library-security-group.RuleCheckArgs"></a>
+
+The arguments for the checkRules function.
+
+Extends the IAspectPropsBase interface which includes additional properties that can be used as args.
+
+#### Initializer <a name="[object Object].Initializer"></a>
+
+```typescript
+import { RuleCheckArgs } from '@renovosolutions/cdk-aspects-library-security-group'
+
+const ruleCheckArgs: RuleCheckArgs = { ... }
+```
+
+##### `annotationText`<sup>Optional</sup> <a name="@renovosolutions/cdk-aspects-library-security-group.RuleCheckArgs.property.annotationText"></a>
+
+```typescript
+public readonly annotationText: string;
+```
+
+- *Type:* `string`
+
+The annotation text to use for the annotation.
+
+---
+
+##### `annotationType`<sup>Optional</sup> <a name="@renovosolutions/cdk-aspects-library-security-group.RuleCheckArgs.property.annotationType"></a>
+
+```typescript
+public readonly annotationType: AnnotationType;
+```
+
+- *Type:* [`@renovosolutions/cdk-aspects-library-security-group.AnnotationType`](#@renovosolutions/cdk-aspects-library-security-group.AnnotationType)
+
+The annotation type to use for the annotation.
+
+---
+
+##### `anySource`<sup>Optional</sup> <a name="@renovosolutions/cdk-aspects-library-security-group.RuleCheckArgs.property.anySource"></a>
+
+```typescript
+public readonly anySource: boolean;
+```
+
+- *Type:* `boolean`
+- *Default:* false
+
+Whether any source is valid.
+
+This will ignore all other restrictions and only check the port.
+
+---
+
+##### `ports`<sup>Optional</sup> <a name="@renovosolutions/cdk-aspects-library-security-group.RuleCheckArgs.property.ports"></a>
+
+```typescript
+public readonly ports: number[];
+```
+
+- *Type:* `number`[]
+- *Default:* undefined
+
+The restricted port.
+
+Defaults to restricting all ports and only checking sources.
+
+---
+
+##### `restrictedCidrs`<sup>Optional</sup> <a name="@renovosolutions/cdk-aspects-library-security-group.RuleCheckArgs.property.restrictedCidrs"></a>
+
+```typescript
+public readonly restrictedCidrs: string[];
+```
+
+- *Type:* `string`[]
+- *Default:* ['0.0.0.0/0', '::/0']
+
+The restricted CIDRs for the given port.
+
+---
+
+##### `restrictedSGs`<sup>Optional</sup> <a name="@renovosolutions/cdk-aspects-library-security-group.RuleCheckArgs.property.restrictedSGs"></a>
+
+```typescript
+public readonly restrictedSGs: string[];
+```
+
+- *Type:* `string`[]
+- *Default:* undefined
+
+The restricted source security groups for the given port.
+
+---
+
+##### `node`<sup>Required</sup> <a name="@renovosolutions/cdk-aspects-library-security-group.RuleCheckArgs.property.node"></a>
+
+```typescript
+public readonly node: IConstruct;
+```
+
+- *Type:* [`@aws-cdk/core.IConstruct`](#@aws-cdk/core.IConstruct)
+
+The node to check.
+
+---
 
 ## Classes <a name="Classes"></a>
 
@@ -13,12 +254,12 @@ Restricted common ports based on AWS Config rule https://docs.aws.amazon.com/con
 ```typescript
 import { AWSRestrictedCommonPortsAspect } from '@renovosolutions/cdk-aspects-library-security-group'
 
-new AWSRestrictedCommonPortsAspect(props?: IAspectPropsBase)
+new AWSRestrictedCommonPortsAspect(props?: AspectPropsBase)
 ```
 
 ##### `props`<sup>Optional</sup> <a name="@renovosolutions/cdk-aspects-library-security-group.AWSRestrictedCommonPortsAspect.parameter.props"></a>
 
-- *Type:* [`@renovosolutions/cdk-aspects-library-security-group.IAspectPropsBase`](#@renovosolutions/cdk-aspects-library-security-group.IAspectPropsBase)
+- *Type:* [`@renovosolutions/cdk-aspects-library-security-group.AspectPropsBase`](#@renovosolutions/cdk-aspects-library-security-group.AspectPropsBase)
 
 ---
 
@@ -39,12 +280,12 @@ This aspect uses the NoPublicIngressSSHAspect with an alternate annotation text.
 ```typescript
 import { CISAwsFoundationBenchmark4Dot1Aspect } from '@renovosolutions/cdk-aspects-library-security-group'
 
-new CISAwsFoundationBenchmark4Dot1Aspect(props?: IAspectPropsBase)
+new CISAwsFoundationBenchmark4Dot1Aspect(props?: AspectPropsBase)
 ```
 
 ##### `props`<sup>Optional</sup> <a name="@renovosolutions/cdk-aspects-library-security-group.CISAwsFoundationBenchmark4Dot1Aspect.parameter.props"></a>
 
-- *Type:* [`@renovosolutions/cdk-aspects-library-security-group.IAspectPropsBase`](#@renovosolutions/cdk-aspects-library-security-group.IAspectPropsBase)
+- *Type:* [`@renovosolutions/cdk-aspects-library-security-group.AspectPropsBase`](#@renovosolutions/cdk-aspects-library-security-group.AspectPropsBase)
 
 ---
 
@@ -65,12 +306,12 @@ This aspect uses the NoPublicIngressRDPAspect with an alternate annotation text.
 ```typescript
 import { CISAwsFoundationBenchmark4Dot2Aspect } from '@renovosolutions/cdk-aspects-library-security-group'
 
-new CISAwsFoundationBenchmark4Dot2Aspect(props?: IAspectPropsBase)
+new CISAwsFoundationBenchmark4Dot2Aspect(props?: AspectPropsBase)
 ```
 
 ##### `props`<sup>Optional</sup> <a name="@renovosolutions/cdk-aspects-library-security-group.CISAwsFoundationBenchmark4Dot2Aspect.parameter.props"></a>
 
-- *Type:* [`@renovosolutions/cdk-aspects-library-security-group.IAspectPropsBase`](#@renovosolutions/cdk-aspects-library-security-group.IAspectPropsBase)
+- *Type:* [`@renovosolutions/cdk-aspects-library-security-group.AspectPropsBase`](#@renovosolutions/cdk-aspects-library-security-group.AspectPropsBase)
 
 ---
 
@@ -92,12 +333,12 @@ Aspect to restrict any access to common management ports.
 ```typescript
 import { NoIngressCommonManagementPortsAspect } from '@renovosolutions/cdk-aspects-library-security-group'
 
-new NoIngressCommonManagementPortsAspect(props?: IAspectPropsBase)
+new NoIngressCommonManagementPortsAspect(props?: AspectPropsBase)
 ```
 
 ##### `props`<sup>Optional</sup> <a name="@renovosolutions/cdk-aspects-library-security-group.NoIngressCommonManagementPortsAspect.parameter.props"></a>
 
-- *Type:* [`@renovosolutions/cdk-aspects-library-security-group.IAspectPropsBase`](#@renovosolutions/cdk-aspects-library-security-group.IAspectPropsBase)
+- *Type:* [`@renovosolutions/cdk-aspects-library-security-group.AspectPropsBase`](#@renovosolutions/cdk-aspects-library-security-group.AspectPropsBase)
 
 ---
 
@@ -119,12 +360,12 @@ Aspect to restrict any access to common relational DB ports.
 ```typescript
 import { NoIngressCommonRelationalDBPortsAspect } from '@renovosolutions/cdk-aspects-library-security-group'
 
-new NoIngressCommonRelationalDBPortsAspect(props?: IAspectPropsBase)
+new NoIngressCommonRelationalDBPortsAspect(props?: AspectPropsBase)
 ```
 
 ##### `props`<sup>Optional</sup> <a name="@renovosolutions/cdk-aspects-library-security-group.NoIngressCommonRelationalDBPortsAspect.parameter.props"></a>
 
-- *Type:* [`@renovosolutions/cdk-aspects-library-security-group.IAspectPropsBase`](#@renovosolutions/cdk-aspects-library-security-group.IAspectPropsBase)
+- *Type:* [`@renovosolutions/cdk-aspects-library-security-group.AspectPropsBase`](#@renovosolutions/cdk-aspects-library-security-group.AspectPropsBase)
 
 ---
 
@@ -146,12 +387,12 @@ Aspect to restrict any access to common web ports.
 ```typescript
 import { NoIngressCommonWebPortsAspect } from '@renovosolutions/cdk-aspects-library-security-group'
 
-new NoIngressCommonWebPortsAspect(props?: IAspectPropsBase)
+new NoIngressCommonWebPortsAspect(props?: AspectPropsBase)
 ```
 
 ##### `props`<sup>Optional</sup> <a name="@renovosolutions/cdk-aspects-library-security-group.NoIngressCommonWebPortsAspect.parameter.props"></a>
 
-- *Type:* [`@renovosolutions/cdk-aspects-library-security-group.IAspectPropsBase`](#@renovosolutions/cdk-aspects-library-security-group.IAspectPropsBase)
+- *Type:* [`@renovosolutions/cdk-aspects-library-security-group.AspectPropsBase`](#@renovosolutions/cdk-aspects-library-security-group.AspectPropsBase)
 
 ---
 
@@ -172,12 +413,12 @@ Blocks the ANY port from the public internet.
 ```typescript
 import { NoPublicIngressAspect } from '@renovosolutions/cdk-aspects-library-security-group'
 
-new NoPublicIngressAspect(props?: IAspectPropsBase)
+new NoPublicIngressAspect(props?: AspectPropsBase)
 ```
 
 ##### `props`<sup>Optional</sup> <a name="@renovosolutions/cdk-aspects-library-security-group.NoPublicIngressAspect.parameter.props"></a>
 
-- *Type:* [`@renovosolutions/cdk-aspects-library-security-group.IAspectPropsBase`](#@renovosolutions/cdk-aspects-library-security-group.IAspectPropsBase)
+- *Type:* [`@renovosolutions/cdk-aspects-library-security-group.AspectPropsBase`](#@renovosolutions/cdk-aspects-library-security-group.AspectPropsBase)
 
 ---
 
@@ -198,12 +439,12 @@ This inherits everything from the base SecurityGroupAspectBase class and sets a 
 ```typescript
 import { NoPublicIngressAspectBase } from '@renovosolutions/cdk-aspects-library-security-group'
 
-new NoPublicIngressAspectBase(props?: IAspectPropsBase)
+new NoPublicIngressAspectBase(props?: AspectPropsBase)
 ```
 
 ##### `props`<sup>Optional</sup> <a name="@renovosolutions/cdk-aspects-library-security-group.NoPublicIngressAspectBase.parameter.props"></a>
 
-- *Type:* [`@renovosolutions/cdk-aspects-library-security-group.IAspectPropsBase`](#@renovosolutions/cdk-aspects-library-security-group.IAspectPropsBase)
+- *Type:* [`@renovosolutions/cdk-aspects-library-security-group.AspectPropsBase`](#@renovosolutions/cdk-aspects-library-security-group.AspectPropsBase)
 
 ---
 
@@ -225,12 +466,12 @@ Aspect to restrict public access to common management ports.
 ```typescript
 import { NoPublicIngressCommonManagementPortsAspect } from '@renovosolutions/cdk-aspects-library-security-group'
 
-new NoPublicIngressCommonManagementPortsAspect(props?: IAspectPropsBase)
+new NoPublicIngressCommonManagementPortsAspect(props?: AspectPropsBase)
 ```
 
 ##### `props`<sup>Optional</sup> <a name="@renovosolutions/cdk-aspects-library-security-group.NoPublicIngressCommonManagementPortsAspect.parameter.props"></a>
 
-- *Type:* [`@renovosolutions/cdk-aspects-library-security-group.IAspectPropsBase`](#@renovosolutions/cdk-aspects-library-security-group.IAspectPropsBase)
+- *Type:* [`@renovosolutions/cdk-aspects-library-security-group.AspectPropsBase`](#@renovosolutions/cdk-aspects-library-security-group.AspectPropsBase)
 
 ---
 
@@ -252,12 +493,12 @@ Aspect to restrict public access to common relational DB ports.
 ```typescript
 import { NoPublicIngressCommonRelationalDBPortsAspect } from '@renovosolutions/cdk-aspects-library-security-group'
 
-new NoPublicIngressCommonRelationalDBPortsAspect(props?: IAspectPropsBase)
+new NoPublicIngressCommonRelationalDBPortsAspect(props?: AspectPropsBase)
 ```
 
 ##### `props`<sup>Optional</sup> <a name="@renovosolutions/cdk-aspects-library-security-group.NoPublicIngressCommonRelationalDBPortsAspect.parameter.props"></a>
 
-- *Type:* [`@renovosolutions/cdk-aspects-library-security-group.IAspectPropsBase`](#@renovosolutions/cdk-aspects-library-security-group.IAspectPropsBase)
+- *Type:* [`@renovosolutions/cdk-aspects-library-security-group.AspectPropsBase`](#@renovosolutions/cdk-aspects-library-security-group.AspectPropsBase)
 
 ---
 
@@ -279,12 +520,12 @@ Aspect to restrict public access to common web ports.
 ```typescript
 import { NoPublicIngressCommonWebPortsAspect } from '@renovosolutions/cdk-aspects-library-security-group'
 
-new NoPublicIngressCommonWebPortsAspect(props?: IAspectPropsBase)
+new NoPublicIngressCommonWebPortsAspect(props?: AspectPropsBase)
 ```
 
 ##### `props`<sup>Optional</sup> <a name="@renovosolutions/cdk-aspects-library-security-group.NoPublicIngressCommonWebPortsAspect.parameter.props"></a>
 
-- *Type:* [`@renovosolutions/cdk-aspects-library-security-group.IAspectPropsBase`](#@renovosolutions/cdk-aspects-library-security-group.IAspectPropsBase)
+- *Type:* [`@renovosolutions/cdk-aspects-library-security-group.AspectPropsBase`](#@renovosolutions/cdk-aspects-library-security-group.AspectPropsBase)
 
 ---
 
@@ -301,12 +542,12 @@ Aspect to determine if a security group allows inbound traffic from the public i
 ```typescript
 import { NoPublicIngressRDPAspect } from '@renovosolutions/cdk-aspects-library-security-group'
 
-new NoPublicIngressRDPAspect(props?: IAspectPropsBase)
+new NoPublicIngressRDPAspect(props?: AspectPropsBase)
 ```
 
 ##### `props`<sup>Optional</sup> <a name="@renovosolutions/cdk-aspects-library-security-group.NoPublicIngressRDPAspect.parameter.props"></a>
 
-- *Type:* [`@renovosolutions/cdk-aspects-library-security-group.IAspectPropsBase`](#@renovosolutions/cdk-aspects-library-security-group.IAspectPropsBase)
+- *Type:* [`@renovosolutions/cdk-aspects-library-security-group.AspectPropsBase`](#@renovosolutions/cdk-aspects-library-security-group.AspectPropsBase)
 
 ---
 
@@ -323,12 +564,12 @@ Aspect to determine if a security group allows inbound traffic from the public i
 ```typescript
 import { NoPublicIngressSSHAspect } from '@renovosolutions/cdk-aspects-library-security-group'
 
-new NoPublicIngressSSHAspect(props?: IAspectPropsBase)
+new NoPublicIngressSSHAspect(props?: AspectPropsBase)
 ```
 
 ##### `props`<sup>Optional</sup> <a name="@renovosolutions/cdk-aspects-library-security-group.NoPublicIngressSSHAspect.parameter.props"></a>
 
-- *Type:* [`@renovosolutions/cdk-aspects-library-security-group.IAspectPropsBase`](#@renovosolutions/cdk-aspects-library-security-group.IAspectPropsBase)
+- *Type:* [`@renovosolutions/cdk-aspects-library-security-group.AspectPropsBase`](#@renovosolutions/cdk-aspects-library-security-group.AspectPropsBase)
 
 ---
 
@@ -349,12 +590,12 @@ By default this will not restrict anything.
 ```typescript
 import { SecurityGroupAspectBase } from '@renovosolutions/cdk-aspects-library-security-group'
 
-new SecurityGroupAspectBase(props?: IAspectPropsExtended)
+new SecurityGroupAspectBase(props?: AspectPropsExtended)
 ```
 
 ##### `props`<sup>Optional</sup> <a name="@renovosolutions/cdk-aspects-library-security-group.SecurityGroupAspectBase.parameter.props"></a>
 
-- *Type:* [`@renovosolutions/cdk-aspects-library-security-group.IAspectPropsExtended`](#@renovosolutions/cdk-aspects-library-security-group.IAspectPropsExtended)
+- *Type:* [`@renovosolutions/cdk-aspects-library-security-group.AspectPropsExtended`](#@renovosolutions/cdk-aspects-library-security-group.AspectPropsExtended)
 
 ---
 
@@ -436,242 +677,6 @@ public readonly restrictedSGs: string[];
 ---
 
 
-## Protocols <a name="Protocols"></a>
-
-### IAspectPropsBase <a name="@renovosolutions/cdk-aspects-library-security-group.IAspectPropsBase"></a>
-
-- *Implemented By:* [`@renovosolutions/cdk-aspects-library-security-group.IAspectPropsBase`](#@renovosolutions/cdk-aspects-library-security-group.IAspectPropsBase), [`@renovosolutions/cdk-aspects-library-security-group.IAspectPropsExtended`](#@renovosolutions/cdk-aspects-library-security-group.IAspectPropsExtended), [`@renovosolutions/cdk-aspects-library-security-group.IRuleCheckArgs`](#@renovosolutions/cdk-aspects-library-security-group.IRuleCheckArgs)
-
-The base aspect properties available to any aspect.
-
-JSII doesn't support an Omit when extending interfaces, so we create a base class to extend from.
-This base class meets the needed properties for all non-base aspects.
-
-
-#### Properties <a name="Properties"></a>
-
-##### `annotationText`<sup>Optional</sup> <a name="@renovosolutions/cdk-aspects-library-security-group.IAspectPropsBase.property.annotationText"></a>
-
-```typescript
-public readonly annotationText: string;
-```
-
-- *Type:* `string`
-
-The annotation text to use for the annotation.
-
----
-
-##### `annotationType`<sup>Optional</sup> <a name="@renovosolutions/cdk-aspects-library-security-group.IAspectPropsBase.property.annotationType"></a>
-
-```typescript
-public readonly annotationType: AnnotationType;
-```
-
-- *Type:* [`@renovosolutions/cdk-aspects-library-security-group.AnnotationType`](#@renovosolutions/cdk-aspects-library-security-group.AnnotationType)
-
-The annotation type to use for the annotation.
-
----
-
-### IAspectPropsExtended <a name="@renovosolutions/cdk-aspects-library-security-group.IAspectPropsExtended"></a>
-
-- *Extends:* [`@renovosolutions/cdk-aspects-library-security-group.IAspectPropsBase`](#@renovosolutions/cdk-aspects-library-security-group.IAspectPropsBase)
-
-- *Implemented By:* [`@renovosolutions/cdk-aspects-library-security-group.IAspectPropsExtended`](#@renovosolutions/cdk-aspects-library-security-group.IAspectPropsExtended), [`@renovosolutions/cdk-aspects-library-security-group.IRuleCheckArgs`](#@renovosolutions/cdk-aspects-library-security-group.IRuleCheckArgs)
-
-The extended aspect properties available only to the base security aspects.
-
-These additional properties shouldn't be changed in aspects that already have clearly defined goals.
-So, this extended properties interface is applied selectively to the base aspects.
-
-
-#### Properties <a name="Properties"></a>
-
-##### `annotationText`<sup>Optional</sup> <a name="@renovosolutions/cdk-aspects-library-security-group.IAspectPropsExtended.property.annotationText"></a>
-
-```typescript
-public readonly annotationText: string;
-```
-
-- *Type:* `string`
-
-The annotation text to use for the annotation.
-
----
-
-##### `annotationType`<sup>Optional</sup> <a name="@renovosolutions/cdk-aspects-library-security-group.IAspectPropsExtended.property.annotationType"></a>
-
-```typescript
-public readonly annotationType: AnnotationType;
-```
-
-- *Type:* [`@renovosolutions/cdk-aspects-library-security-group.AnnotationType`](#@renovosolutions/cdk-aspects-library-security-group.AnnotationType)
-
-The annotation type to use for the annotation.
-
----
-
-##### `anySource`<sup>Optional</sup> <a name="@renovosolutions/cdk-aspects-library-security-group.IAspectPropsExtended.property.anySource"></a>
-
-```typescript
-public readonly anySource: boolean;
-```
-
-- *Type:* `boolean`
-- *Default:* false
-
-Whether any source is valid.
-
-This will ignore all other restrictions and only check the port.
-
----
-
-##### `ports`<sup>Optional</sup> <a name="@renovosolutions/cdk-aspects-library-security-group.IAspectPropsExtended.property.ports"></a>
-
-```typescript
-public readonly ports: number[];
-```
-
-- *Type:* `number`[]
-- *Default:* undefined
-
-The restricted port.
-
-Defaults to restricting all ports and only checking sources.
-
----
-
-##### `restrictedCidrs`<sup>Optional</sup> <a name="@renovosolutions/cdk-aspects-library-security-group.IAspectPropsExtended.property.restrictedCidrs"></a>
-
-```typescript
-public readonly restrictedCidrs: string[];
-```
-
-- *Type:* `string`[]
-- *Default:* ['0.0.0.0/0', '::/0']
-
-The restricted CIDRs for the given port.
-
----
-
-##### `restrictedSGs`<sup>Optional</sup> <a name="@renovosolutions/cdk-aspects-library-security-group.IAspectPropsExtended.property.restrictedSGs"></a>
-
-```typescript
-public readonly restrictedSGs: string[];
-```
-
-- *Type:* `string`[]
-- *Default:* undefined
-
-The restricted source security groups for the given port.
-
----
-
-### IRuleCheckArgs <a name="@renovosolutions/cdk-aspects-library-security-group.IRuleCheckArgs"></a>
-
-- *Extends:* [`@renovosolutions/cdk-aspects-library-security-group.IAspectPropsExtended`](#@renovosolutions/cdk-aspects-library-security-group.IAspectPropsExtended)
-
-- *Implemented By:* [`@renovosolutions/cdk-aspects-library-security-group.IRuleCheckArgs`](#@renovosolutions/cdk-aspects-library-security-group.IRuleCheckArgs)
-
-The arguments for the checkRules function.
-
-Extends the IAspectPropsBase interface which includes additional properties that can be used as args.
-
-
-#### Properties <a name="Properties"></a>
-
-##### `annotationText`<sup>Optional</sup> <a name="@renovosolutions/cdk-aspects-library-security-group.IRuleCheckArgs.property.annotationText"></a>
-
-```typescript
-public readonly annotationText: string;
-```
-
-- *Type:* `string`
-
-The annotation text to use for the annotation.
-
----
-
-##### `annotationType`<sup>Optional</sup> <a name="@renovosolutions/cdk-aspects-library-security-group.IRuleCheckArgs.property.annotationType"></a>
-
-```typescript
-public readonly annotationType: AnnotationType;
-```
-
-- *Type:* [`@renovosolutions/cdk-aspects-library-security-group.AnnotationType`](#@renovosolutions/cdk-aspects-library-security-group.AnnotationType)
-
-The annotation type to use for the annotation.
-
----
-
-##### `anySource`<sup>Optional</sup> <a name="@renovosolutions/cdk-aspects-library-security-group.IRuleCheckArgs.property.anySource"></a>
-
-```typescript
-public readonly anySource: boolean;
-```
-
-- *Type:* `boolean`
-- *Default:* false
-
-Whether any source is valid.
-
-This will ignore all other restrictions and only check the port.
-
----
-
-##### `ports`<sup>Optional</sup> <a name="@renovosolutions/cdk-aspects-library-security-group.IRuleCheckArgs.property.ports"></a>
-
-```typescript
-public readonly ports: number[];
-```
-
-- *Type:* `number`[]
-- *Default:* undefined
-
-The restricted port.
-
-Defaults to restricting all ports and only checking sources.
-
----
-
-##### `restrictedCidrs`<sup>Optional</sup> <a name="@renovosolutions/cdk-aspects-library-security-group.IRuleCheckArgs.property.restrictedCidrs"></a>
-
-```typescript
-public readonly restrictedCidrs: string[];
-```
-
-- *Type:* `string`[]
-- *Default:* ['0.0.0.0/0', '::/0']
-
-The restricted CIDRs for the given port.
-
----
-
-##### `restrictedSGs`<sup>Optional</sup> <a name="@renovosolutions/cdk-aspects-library-security-group.IRuleCheckArgs.property.restrictedSGs"></a>
-
-```typescript
-public readonly restrictedSGs: string[];
-```
-
-- *Type:* `string`[]
-- *Default:* undefined
-
-The restricted source security groups for the given port.
-
----
-
-##### `node`<sup>Required</sup> <a name="@renovosolutions/cdk-aspects-library-security-group.IRuleCheckArgs.property.node"></a>
-
-```typescript
-public readonly node: IConstruct;
-```
-
-- *Type:* [`@aws-cdk/core.IConstruct`](#@aws-cdk/core.IConstruct)
-
-The node to check.
-
----
 
 ## Enums <a name="Enums"></a>
 

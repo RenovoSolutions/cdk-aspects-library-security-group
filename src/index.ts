@@ -16,16 +16,16 @@ export enum AnnotationType {
  * JSII doesn't support an Omit when extending interfaces, so we create a base class to extend from.
  * This base class meets the needed properties for all non-base aspects.
  */
-export interface IAspectPropsBase {
+export interface AspectPropsBase {
   /**
    * The annotation text to use for the annotation.
    */
-  annotationText?: string;
+  readonly annotationText?: string;
 
   /**
    * The annotation type to use for the annotation.
    */
-  annotationType?: AnnotationType;
+  readonly annotationType?: AnnotationType;
 }
 
 /**
@@ -34,14 +34,14 @@ export interface IAspectPropsBase {
  * These additional properties shouldn't be changed in aspects that already have clearly defined goals.
  * So, this extended properties interface is applied selectively to the base aspects.
  */
-export interface IAspectPropsExtended extends IAspectPropsBase {
+export interface AspectPropsExtended extends AspectPropsBase {
   /**
    * The restricted port. Defaults to restricting all ports and only checking sources.
    *
    *
    * @default undefined
    */
-  ports?: number[];
+  readonly ports?: number[];
 
   /**
    * The restricted CIDRs for the given port.
@@ -49,7 +49,7 @@ export interface IAspectPropsExtended extends IAspectPropsBase {
    *
    * @default ['0.0.0.0/0', '::/0']
    */
-  restrictedCidrs?: string[];
+  readonly restrictedCidrs?: string[];
 
   /**
    * The restricted source security groups for the given port.
@@ -57,7 +57,7 @@ export interface IAspectPropsExtended extends IAspectPropsBase {
    *
    * @default undefined
    */
-  restrictedSGs?: string[];
+  readonly restrictedSGs?: string[];
 
   /**
    * Whether any source is valid. This will ignore all other restrictions and only check the port.
@@ -65,7 +65,7 @@ export interface IAspectPropsExtended extends IAspectPropsBase {
    *
    * @default false
    */
-  anySource?: boolean;
+  readonly anySource?: boolean;
 }
 
 /**
@@ -117,11 +117,11 @@ export function annotate(node:cdk.IConstruct, annotationText:string | undefined,
  * The arguments for the checkRules function.
  * Extends the IAspectPropsBase interface which includes additional properties that can be used as args.
  */
-export interface IRuleCheckArgs extends IAspectPropsExtended {
+export interface RuleCheckArgs extends AspectPropsExtended {
   /**
    * The node to check.
    */
-  node: cdk.IConstruct;
+  readonly node: cdk.IConstruct;
 }
 
 /**
@@ -131,7 +131,7 @@ export interface IRuleCheckArgs extends IAspectPropsExtended {
  *
  * Function to check a node for security group rules and determine if they breaks the rules of a given aspect.
  */
-export function checkRules(args: IRuleCheckArgs) {
+export function checkRules(args: RuleCheckArgs) {
   if (args.node instanceof ec2.CfnSecurityGroup) {
     checkInlineRules(cdk.Stack.of(args.node).resolve(args.node.securityGroupIngress));
   } else if (args.node instanceof ec2.CfnSecurityGroupIngress) {
@@ -201,7 +201,7 @@ export class SecurityGroupAspectBase implements cdk.IAspect {
   public restrictedSGs: string[] | undefined;
   public anySource: boolean;
 
-  constructor(props?: IAspectPropsExtended) {
+  constructor(props?: AspectPropsExtended) {
     this.annotationType = props?.annotationType ?? AnnotationType.ERROR;
     this.annotationText = props?.annotationText ?? 'A security group rule was blocked by an aspect applied to this stack.';
     this.ports = props?.ports;
@@ -229,7 +229,7 @@ export class SecurityGroupAspectBase implements cdk.IAspect {
  * This inherits everything from the base SecurityGroupAspectBase class and sets a default set of CIDRS that match allowing all IPs on AWS.
  */
 export class NoPublicIngressAspectBase extends SecurityGroupAspectBase implements cdk.IAspect {
-  constructor(props?: IAspectPropsBase) {
+  constructor(props?: AspectPropsBase) {
     super(props);
 
     this.restrictedCidrs = ['0.0.0.0/0', '::/0'];
@@ -242,7 +242,7 @@ export class NoPublicIngressAspectBase extends SecurityGroupAspectBase implement
  * Blocks the ANY port from the public internet.
  */
 export class NoPublicIngressAspect extends NoPublicIngressAspectBase implements cdk.IAspect {
-  constructor(props?: IAspectPropsBase) {
+  constructor(props?: AspectPropsBase) {
     super(props);
 
     this.annotationText = props?.annotationText ?? 'NoPublicIngressAspect: A security group rule allows public access to a restricted port: All ports restricted).';
@@ -253,7 +253,7 @@ export class NoPublicIngressAspect extends NoPublicIngressAspectBase implements 
  * Aspect to determine if a security group allows inbound traffic from the public internet to the SSH port.
  */
 export class NoPublicIngressSSHAspect extends NoPublicIngressAspectBase {
-  constructor(props?: IAspectPropsBase) {
+  constructor(props?: AspectPropsBase) {
     super(props);
 
     this.annotationText = props?.annotationText ?? 'NoPublicIngressSSHAspect: A security group rule allows access to a restricted port from public IPs (0.0.0.0/0): 22 (SSH)';
@@ -269,7 +269,7 @@ export class NoPublicIngressSSHAspect extends NoPublicIngressAspectBase {
  * This aspect uses the NoPublicIngressSSHAspect with an alternate annotation text.
  */
 export class CISAwsFoundationBenchmark4Dot1Aspect extends NoPublicIngressSSHAspect {
-  constructor(props?: IAspectPropsBase) {
+  constructor(props?: AspectPropsBase) {
     super(props);
 
     this.annotationText = 'CIS AWS Foundations Benchmark 4.1: Ensure no security groups allow ingress from 0.0.0.0/0 to port 22';
@@ -280,7 +280,7 @@ export class CISAwsFoundationBenchmark4Dot1Aspect extends NoPublicIngressSSHAspe
  * Aspect to determine if a security group allows inbound traffic from the public internet to the RDP port.
  */
 export class NoPublicIngressRDPAspect extends NoPublicIngressAspectBase {
-  constructor(props?: IAspectPropsBase) {
+  constructor(props?: AspectPropsBase) {
     super(props);
 
     this.annotationText = props?.annotationText ?? 'NoPublicIngressRDPAspect: A security group rule allows access to a restricted port from public IPs (0.0.0.0/0): 3389 (RDP)';
@@ -296,7 +296,7 @@ export class NoPublicIngressRDPAspect extends NoPublicIngressAspectBase {
  * This aspect uses the NoPublicIngressRDPAspect with an alternate annotation text.
  */
 export class CISAwsFoundationBenchmark4Dot2Aspect extends NoPublicIngressRDPAspect {
-  constructor(props?: IAspectPropsBase) {
+  constructor(props?: AspectPropsBase) {
     super(props);
 
     this.annotationText = 'CIS AWS Foundations Benchmark 4.2: Ensure no security groups allow ingress from 0.0.0.0/0 to port 3389';
@@ -307,7 +307,7 @@ export class CISAwsFoundationBenchmark4Dot2Aspect extends NoPublicIngressRDPAspe
  * Restricted common ports based on AWS Config rule https://docs.aws.amazon.com/config/latest/developerguide/restricted-common-ports.html
  */
 export class AWSRestrictedCommonPortsAspect extends NoPublicIngressAspectBase {
-  constructor(props?: IAspectPropsBase) {
+  constructor(props?: AspectPropsBase) {
     super(props);
 
     this.ports = [
@@ -330,7 +330,7 @@ export class AWSRestrictedCommonPortsAspect extends NoPublicIngressAspectBase {
  * 5986 - WinRM HTTPS
  */
 export class NoPublicIngressCommonManagementPortsAspect extends NoPublicIngressAspectBase {
-  constructor(props?: IAspectPropsBase) {
+  constructor(props?: AspectPropsBase) {
     super(props);
 
     this.ports = [
@@ -352,7 +352,7 @@ export class NoPublicIngressCommonManagementPortsAspect extends NoPublicIngressA
  * 5986 - WinRM HTTPS
  */
 export class NoIngressCommonManagementPortsAspect extends SecurityGroupAspectBase {
-  constructor(props?: IAspectPropsBase) {
+  constructor(props?: AspectPropsBase) {
     super(props);
 
     this.ports = [
@@ -375,7 +375,7 @@ export class NoIngressCommonManagementPortsAspect extends SecurityGroupAspectBas
  * 1433 - SQL Server
  */
 export class NoPublicIngressCommonRelationalDBPortsAspect extends NoPublicIngressAspectBase {
-  constructor(props?: IAspectPropsBase) {
+  constructor(props?: AspectPropsBase) {
     super(props);
 
     this.ports = [
@@ -397,7 +397,7 @@ export class NoPublicIngressCommonRelationalDBPortsAspect extends NoPublicIngres
  * 1433 - SQL Server
  */
 export class NoIngressCommonRelationalDBPortsAspect extends SecurityGroupAspectBase {
-  constructor(props?: IAspectPropsBase) {
+  constructor(props?: AspectPropsBase) {
     super(props);
 
     this.ports = [
@@ -420,7 +420,7 @@ export class NoIngressCommonRelationalDBPortsAspect extends SecurityGroupAspectB
  * 8443 - HTTPS
  */
 export class NoPublicIngressCommonWebPortsAspect extends NoPublicIngressAspectBase {
-  constructor(props?: IAspectPropsBase) {
+  constructor(props?: AspectPropsBase) {
     super(props);
 
     this.ports = [
@@ -442,7 +442,7 @@ export class NoPublicIngressCommonWebPortsAspect extends NoPublicIngressAspectBa
  * 8443 - HTTPS
  */
 export class NoIngressCommonWebPortsAspect extends SecurityGroupAspectBase {
-  constructor(props?: IAspectPropsBase) {
+  constructor(props?: AspectPropsBase) {
     super(props);
 
     this.ports = [
