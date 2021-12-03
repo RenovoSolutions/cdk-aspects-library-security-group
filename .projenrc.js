@@ -2,7 +2,7 @@ const { AwsCdkConstructLibrary, NpmAccess } = require('projen');
 const project = new AwsCdkConstructLibrary({
   author: 'Renovo Solutions',
   authorAddress: 'webmaster+cdk@renovo1.com',
-  cdkVersion: '1.134.0',
+  cdkVersion: '2.0.0',
   defaultReleaseBranch: 'master',
   majorVersion: '2',
   releaseBranches: {
@@ -14,8 +14,10 @@ const project = new AwsCdkConstructLibrary({
   description: 'A library of CDK aspects applying to security groups.',
   repositoryUrl: 'https://github.com/RenovoSolutions/cdk-aspects-library-security-group.git',
   cdkDependencies: [
-    '@aws-cdk/core',
-    '@aws-cdk/aws-ec2',
+    'aws-cdk-lib',
+  ],
+  deps: [
+    'constructs@^10.0.0',
   ],
   keywords: [
     'cdk',
@@ -79,5 +81,6 @@ const project = new AwsCdkConstructLibrary({
     dotNetNamespace: 'renovosolutions',
     packageId: 'Renovo.AWSCDK.AspectsSecurityGroup',
   },
+  workflowNodeVersion: '14.17.0',
 });
 project.synth();

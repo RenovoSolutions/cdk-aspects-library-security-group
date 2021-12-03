@@ -237,7 +237,7 @@ The restricted source security groups for the given port.
 public readonly node: IConstruct;
 ```
 
-- *Type:* [`@aws-cdk/core.IConstruct`](#@aws-cdk/core.IConstruct)
+- *Type:* [`constructs.IConstruct`](#constructs.IConstruct)
 
 The node to check.
 
@@ -402,7 +402,7 @@ new NoIngressCommonWebPortsAspect(props?: AspectPropsBase)
 
 ### NoPublicIngressAspect <a name="@renovosolutions/cdk-aspects-library-security-group.NoPublicIngressAspect"></a>
 
-- *Implements:* [`@aws-cdk/core.IAspect`](#@aws-cdk/core.IAspect)
+- *Implements:* [`aws-cdk-lib.IAspect`](#aws-cdk-lib.IAspect)
 
 The same as the base NoPublicIngressAspectBase but with a more descriptive annotation.
 
@@ -428,7 +428,7 @@ new NoPublicIngressAspect(props?: AspectPropsBase)
 
 ### NoPublicIngressAspectBase <a name="@renovosolutions/cdk-aspects-library-security-group.NoPublicIngressAspectBase"></a>
 
-- *Implements:* [`@aws-cdk/core.IAspect`](#@aws-cdk/core.IAspect)
+- *Implements:* [`aws-cdk-lib.IAspect`](#aws-cdk-lib.IAspect)
 
 The base aspect to determine if a security group allows inbound traffic from the public internet to any port.
 
@@ -579,7 +579,7 @@ new NoPublicIngressSSHAspect(props?: AspectPropsBase)
 
 ### SecurityGroupAspectBase <a name="@renovosolutions/cdk-aspects-library-security-group.SecurityGroupAspectBase"></a>
 
-- *Implements:* [`@aws-cdk/core.IAspect`](#@aws-cdk/core.IAspect)
+- *Implements:* [`aws-cdk-lib.IAspect`](#aws-cdk-lib.IAspect)
 
 The base class for all security group aspects in the library.
 
@@ -609,7 +609,7 @@ public visit(node: IConstruct)
 
 ###### `node`<sup>Required</sup> <a name="@renovosolutions/cdk-aspects-library-security-group.SecurityGroupAspectBase.parameter.node"></a>
 
-- *Type:* [`@aws-cdk/core.IConstruct`](#@aws-cdk/core.IConstruct)
+- *Type:* [`constructs.IConstruct`](#constructs.IConstruct)
 
 ---
 
