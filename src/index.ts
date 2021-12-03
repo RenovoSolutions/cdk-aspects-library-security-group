@@ -1,5 +1,5 @@
-import * as ec2 from '@aws-cdk/aws-ec2';
-import * as cdk from '@aws-cdk/core';
+import { aws_ec2 as ec2, Stack, Tokenization, IAspect, Annotations } from 'aws-cdk-lib';
+import { IConstruct } from 'constructs';
 
 /**
  * The supported annotation types. Only error will stop deployment of restricted resources.
@@ -92,23 +92,23 @@ export function anyInRange(num: number[], from: number, to: number) {
  * @function annotate
  * Function to annotate a construct node based on a defined annotation type.
  *
- * @param {cdk.IConstruct} node The construct node to annotate.
+ * @param {IConstruct} node The construct node to annotate.
  * @param {string} annotationText The annotation text to use for the annotation.
  * @param {AnnotationType} annotationType The annotation type to use for the annotation.
  */
-export function annotate(node:cdk.IConstruct, annotationText:string | undefined, annotationType:AnnotationType | undefined) {
+export function annotate(node:IConstruct, annotationText:string | undefined, annotationType:AnnotationType | undefined) {
   annotationText = annotationText || 'A security group rule was blocked by an aspect applied to this stack.';
   annotationType = annotationType || AnnotationType.ERROR;
 
   switch (annotationType) {
     case 'error':
-      cdk.Annotations.of(node).addError(annotationText);
+      Annotations.of(node).addError(annotationText);
       break;
     case 'warning':
-      cdk.Annotations.of(node).addWarning(annotationText);
+      Annotations.of(node).addWarning(annotationText);
       break;
     case 'info':
-      cdk.Annotations.of(node).addInfo(annotationText);
+      Annotations.of(node).addInfo(annotationText);
       break;
   }
 }
@@ -121,7 +121,7 @@ export interface RuleCheckArgs extends AspectPropsExtended {
   /**
    * The node to check.
    */
-  readonly node: cdk.IConstruct;
+  readonly node: IConstruct;
 }
 
 /**
@@ -133,7 +133,7 @@ export interface RuleCheckArgs extends AspectPropsExtended {
  */
 export function checkRules(args: RuleCheckArgs) {
   if (args.node instanceof ec2.CfnSecurityGroup) {
-    checkInlineRules(cdk.Stack.of(args.node).resolve(args.node.securityGroupIngress));
+    checkInlineRules(Stack.of(args.node).resolve(args.node.securityGroupIngress));
   } else if (args.node instanceof ec2.CfnSecurityGroupIngress) {
     checkRule(args.node);
   }
@@ -147,7 +147,7 @@ export function checkRules(args: RuleCheckArgs) {
   }
 
   function checkRule(rule: ec2.CfnSecurityGroupIngress | ec2.CfnSecurityGroup.IngressProperty) {
-    if (!cdk.Tokenization.isResolvable(rule)) {
+    if (!Tokenization.isResolvable(rule)) {
       let matchingSource = false;
       let matchingPort = false;
       let shouldAnnotate = false;
@@ -193,7 +193,7 @@ export function checkRules(args: RuleCheckArgs) {
  *
  * By default this will not restrict anything.
  */
-export class SecurityGroupAspectBase implements cdk.IAspect {
+export class SecurityGroupAspectBase implements IAspect {
   public annotationText: string;
   public annotationType: AnnotationType;
   public ports: number[] | undefined;
@@ -210,7 +210,7 @@ export class SecurityGroupAspectBase implements cdk.IAspect {
     this.anySource = props?.anySource ?? false;
   }
 
-  public visit(node: cdk.IConstruct) {
+  public visit(node: IConstruct) {
     checkRules({
       node,
       annotationText: this.annotationText,
@@ -228,7 +228,7 @@ export class SecurityGroupAspectBase implements cdk.IAspect {
  *
  * This inherits everything from the base SecurityGroupAspectBase class and sets a default set of CIDRS that match allowing all IPs on AWS.
  */
-export class NoPublicIngressAspectBase extends SecurityGroupAspectBase implements cdk.IAspect {
+export class NoPublicIngressAspectBase extends SecurityGroupAspectBase implements IAspect {
   constructor(props?: AspectPropsBase) {
     super(props);
 
@@ -241,7 +241,7 @@ export class NoPublicIngressAspectBase extends SecurityGroupAspectBase implement
  *
  * Blocks the ANY port from the public internet.
  */
-export class NoPublicIngressAspect extends NoPublicIngressAspectBase implements cdk.IAspect {
+export class NoPublicIngressAspect extends NoPublicIngressAspectBase implements IAspect {
   constructor(props?: AspectPropsBase) {
     super(props);
 
