@@ -1,8 +1,8 @@
-const { AwsCdkConstructLibrary, NpmAccess } = require('projen');
-const project = new AwsCdkConstructLibrary({
+const { awscdk, javascript } = require('projen');
+const project = new awscdk.AwsCdkConstructLibrary({
   author: 'Renovo Solutions',
   authorAddress: 'webmaster+cdk@renovo1.com',
-  cdkVersion: '1.134.0',
+  cdkVersion: '1.138.2',
   defaultReleaseBranch: 'master',
   majorVersion: '2',
   releaseBranches: {
@@ -67,7 +67,7 @@ const project = new AwsCdkConstructLibrary({
   },
   releaseToNpm: true,
   releaseWorkflow: true,
-  npmAccess: NpmAccess.PUBLIC,
+  npmAccess: javascript.NpmAccess.PUBLIC,
   cdkAssert: true,
   docgen: true,
   eslint: true,

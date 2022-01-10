@@ -2,6 +2,7 @@
 !/.gitattributes
 !/.projen/tasks.json
 !/.projen/deps.json
+!/.projen/files.json
 !/.mergify.yml
 !/.github/workflows/pull-request-lint.yml
 !/.github/workflows/stale.yml
@@ -38,6 +39,8 @@ junit.xml
 !/.github/workflows/build.yml
 /dist/changelog.md
 /dist/version.txt
+!/.github/workflows/release.yml
+!/.github/workflows/release-v1.yml
 !/.github/pull_request_template.md
 !/test/
 !/tsconfig.dev.json
@@ -48,7 +51,5 @@ junit.xml
 .jsii
 tsconfig.json
 !/API.md
-!/.github/workflows/release.yml
-!/.github/workflows/release-v1.yml
 !/.github/workflows/upgrade-master.yml
 !/.github/workflows/upgrade-v1.yml
