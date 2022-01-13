@@ -19,7 +19,7 @@ jobs:
         id: 'upgrade_cdk_version'
         uses: renovosolutions/gh-action-awscdk-projen-version-bump@v2.3.0
         with:
-          major_version: 2
+          major-version: 2
           ref: master
   pr:
     if: needs.upgrade-cdk.outputs.patch_created
