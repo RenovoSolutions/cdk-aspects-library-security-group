@@ -1750,9 +1750,9 @@ console-control-strings@^1.1.0:
   integrity sha1-PXz0Rk22RG6mRL9LOVB/mFEAjo4=
 
 constructs@^3.3.69:
-  version "3.3.276"
-  resolved "https://registry.yarnpkg.com/constructs/-/constructs-3.3.276.tgz#40ed09fa7cc527b13e8f1bd2a10b2cc6bbf2fc7d"
-  integrity sha512-zux3sqiP+FUhuKsCZTtWF8dLvp+4ZQ7V2m79FLTD16R0CE7/mNbQku768OxCuSETPKvPydV0Qz+LXf4rzaVZnw==
+  version "3.3.277"
+  resolved "https://registry.yarnpkg.com/constructs/-/constructs-3.3.277.tgz#ff6982ee02b34aea352b5ce81e76ec436134bb05"
+  integrity sha512-IRNEvf52mx204aJwHmlvgL62HatZQrmMGilWL2tdt+EXfnMloSQzvi+WyYe/f4uvp8o8ITRQBS4yuBtBqFjX/g==
 
 conventional-changelog-angular@^5.0.12:
   version "5.0.13"
