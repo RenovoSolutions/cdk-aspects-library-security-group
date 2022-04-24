@@ -9,7 +9,7 @@
   dependencies:
     "@jridgewell/trace-mapping" "^0.3.0"
 
-"@aws-cdk/assert@^1.153.0":
+"@aws-cdk/assert@^1.153.1":
   version "1.153.1"
   resolved "https://registry.yarnpkg.com/@aws-cdk/assert/-/assert-1.153.1.tgz#a0a5d6b976fdc9dae9515f0e3bdf3f3d9067627c"
   integrity sha512-O0LfV5JYzbWQ0vL8K7i6iHQo4j+WycRGFX29oML20hSzZHSstO3AevqpnnLb4EHde4/tPZFED3nq/1EPAx2LSA==
@@ -19,7 +19,7 @@
     "@aws-cdk/cx-api" "1.153.1"
     constructs "^3.3.69"
 
-"@aws-cdk/assertions@^1.153.0":
+"@aws-cdk/assertions@^1.153.1":
   version "1.153.1"
   resolved "https://registry.yarnpkg.com/@aws-cdk/assertions/-/assertions-1.153.1.tgz#1b56fe95646acb24fd4a7b24deaee0a82dd79ff9"
   integrity sha512-cq9L/lDKHcK5ngJSaxKavgQ69X5ou4zdY+Hc36Eq+ay3ZFIDXcBCLxdMZPu570qHKMXTpanBMYRK2SzEMTYZ5Q==
@@ -48,7 +48,7 @@
     "@aws-cdk/core" "1.153.1"
     constructs "^3.3.69"
 
-"@aws-cdk/aws-ec2@^1.153.0":
+"@aws-cdk/aws-ec2@^1.153.1":
   version "1.153.1"
   resolved "https://registry.yarnpkg.com/@aws-cdk/aws-ec2/-/aws-ec2-1.153.1.tgz#4a2cb19ca9e407e8046311a503ec96093148d4d8"
   integrity sha512-LFFJhsCtoP2R2gaTwRbKMkplNLIFZFzbdcsGJ92aqP3SJqxMCxz5+shL372U0fto6tPwN/1qX5/dtumm8ifFGA==
@@ -174,7 +174,7 @@
     string-width "^4.2.3"
     table "^6.8.0"
 
-"@aws-cdk/core@1.153.1", "@aws-cdk/core@^1.153.0":
+"@aws-cdk/core@1.153.1", "@aws-cdk/core@^1.153.1":
   version "1.153.1"
   resolved "https://registry.yarnpkg.com/@aws-cdk/core/-/core-1.153.1.tgz#a480984e41e64be6888ae47cfedbc78fa634e660"
   integrity sha512-HTjvidW0moK46VHYonURpNYEFJcH8u1XHxR5rjr9HuIRIYzzFIdWBEzRtPSFCagxvjlnhwgjLslZzI5PF/rVjQ==
