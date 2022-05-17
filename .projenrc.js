@@ -86,7 +86,7 @@ new javascript.UpgradeDependencies(project, {
   workflowOptions: {
     schedule: javascript.UpgradeDependenciesSchedule.expressions(['0 2 * * 1']),
   },
-  pullRequestTitle: 'chore(deps): upgrade projen',
+  pullRequestTitle: 'upgrade projen',
 });
 
 project.synth();
