@@ -1825,9 +1825,9 @@ console-control-strings@^1.1.0:
   integrity sha512-ty/fTekppD2fIwRvnZAVdeOiGd1c7YXEixbgJTNzqcxJWKQnjJ/V1bNEEE6hygpM3WjwHFUVK6HTjWSzV4a8sQ==
 
 constructs@^3.3.69:
-  version "3.4.27"
-  resolved "https://registry.yarnpkg.com/constructs/-/constructs-3.4.27.tgz#06fed409e9e33adef06ed387fd7a2efafddbe525"
-  integrity sha512-pQnrj6mzYRAVxAC3NhK4dZxAMOxy+34GhpzO8s9c8rjiJ3QMHsc/1PwWxGwz5PCBGVOZSpoiVSYiH/+bJ64g1A==
+  version "3.4.29"
+  resolved "https://registry.yarnpkg.com/constructs/-/constructs-3.4.29.tgz#3e3b8cfe50918fa50f5c9632643335e80394ef7d"
+  integrity sha512-UDtkc4luNV5ixUGEfmVAteZjlcg+HIwb9F//dYsuTXb2P5elDVDl16Mh10TY7Vtx4CUHX3IzxQWLWYxT78unLA==
 
 conventional-changelog-angular@^5.0.12:
   version "5.0.13"
@@ -6126,9 +6126,9 @@ typescript@~3.9.10:
   integrity sha512-w6fIxVE/H1PkLKcCPsFqKE7Kv7QUwhU8qQY2MueZXWx5cPZdwFupLgKK3vntcK98BtNHZtAF4LA/yl2a7k8R6Q==
 
 uglify-js@^3.1.4:
-  version "3.15.5"
-  resolved "https://registry.yarnpkg.com/uglify-js/-/uglify-js-3.15.5.tgz#2b10f9e0bfb3f5c15a8e8404393b6361eaeb33b3"
-  integrity sha512-hNM5q5GbBRB5xB+PMqVRcgYe4c8jbyZ1pzZhS6jbq54/4F2gFK869ZheiE5A8/t+W5jtTNpWef/5Q9zk639FNQ==
+  version "3.16.0"
+  resolved "https://registry.yarnpkg.com/uglify-js/-/uglify-js-3.16.0.tgz#b778ba0831ca102c1d8ecbdec2d2bdfcc7353190"
+  integrity sha512-FEikl6bR30n0T3amyBh3LoiBdqHRy/f4H80+My34HOesOKyHfOsxAPAxOoqC0JUnC1amnO0IwkYC3sko51caSw==
 
 unbox-primitive@^1.0.2:
   version "1.0.2"
