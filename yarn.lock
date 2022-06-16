@@ -1024,9 +1024,9 @@
   integrity sha512-jhuKLIRrhvCPLqwPcx6INqmKeiA5EWrsCOPhrlFSrbrmU4ZMPjj5Ul/oLCMDO98XRUIwVm78xICz4EPCektzeQ==
 
 "@types/node@*":
-  version "17.0.43"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-17.0.43.tgz#7f16898cdd791c9d64069000ad448b47b3ca8353"
-  integrity sha512-jnUpgw8fL9kP2iszfIDyBQtw5Mf4/XSqy0Loc1J9pI14ejL83XcCEvSf50Gs/4ET0I9VCCDoOfufQysj0S66xA==
+  version "18.0.0"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-18.0.0.tgz#67c7b724e1bcdd7a8821ce0d5ee184d3b4dd525a"
+  integrity sha512-cHlGmko4gWLVI27cGJntjs/Sj8th9aYwplmZFwmmgYQQvL5NUsgVJG7OddLvNfLqYS31KFN0s3qlaD9qCaxACA==
 
 "@types/node@^10.17.60":
   version "10.17.60"
@@ -2263,9 +2263,9 @@ duplexer3@^0.1.4:
   integrity sha512-CEj8FwwNA4cVH2uFCoHUrmojhYh1vmCdOaneKJXwkeY1i9jnlslVo9dx+hQ5Hl9GnH/Bwy/IjxAyOePyPKYnzA==
 
 electron-to-chromium@^1.4.147:
-  version "1.4.155"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.155.tgz#9c7190bf5e8608c5a5e4953b1ccf0facf3d1b49d"
-  integrity sha512-niPzKBSYPG06gxLKO0c2kEmgdRMTtIbNrBlvD31Ld8Q57b/K0218U4j8u/OOt25XE1eFOn47FcmQVdx9R1qqxA==
+  version "1.4.157"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.157.tgz#25799684ed6f2be52bee2b716f9de257b24f3ba7"
+  integrity sha512-gteFnXPKsDAdm1U5vVuyrLnKOaR/x/SY+HjUQoHypLUYWJt4RaWU3PaiTBEkRDJh8/Zd8KC/EFjV+uPaHsjKFA==
 
 emittery@^0.8.1:
   version "0.8.1"
