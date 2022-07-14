@@ -89,12 +89,12 @@
     },
     {
       "name": "@aws-cdk/aws-ec2",
-      "version": "^1.163.1",
+      "version": "^1.163.2",
       "type": "peer"
     },
     {
       "name": "@aws-cdk/core",
-      "version": "^1.163.1",
+      "version": "^1.163.2",
       "type": "peer"
     },
     {
@@ -104,22 +104,22 @@
     },
     {
       "name": "@aws-cdk/aws-ec2",
-      "version": "^1.163.1",
+      "version": "^1.163.2",
       "type": "runtime"
     },
     {
       "name": "@aws-cdk/core",
-      "version": "^1.163.1",
+      "version": "^1.163.2",
       "type": "runtime"
     },
     {
       "name": "@aws-cdk/assert",
-      "version": "^1.163.1",
+      "version": "^1.163.2",
       "type": "test"
     },
     {
       "name": "@aws-cdk/assertions",
-      "version": "^1.163.1",
+      "version": "^1.163.2",
       "type": "test"
     }
   ],
