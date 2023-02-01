@@ -2,7 +2,7 @@ import { awscdk, javascript } from 'projen';
 const project = new awscdk.AwsCdkConstructLibrary({
   author: 'Renovo Solutions',
   authorAddress: 'webmaster+cdk@renovo1.com',
-  cdkVersion: '2.62.2',
+  cdkVersion: '2.63.0',
   defaultReleaseBranch: 'master',
   majorVersion: 2,
   projenrcTs: true,
