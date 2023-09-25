@@ -28,3 +28,4 @@ jobs:
             fix
             ci
           requireScope: false
+          githubBaseUrl: ${{ github.api_url }}
