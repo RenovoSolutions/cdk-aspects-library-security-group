@@ -100,43 +100,43 @@ function expectedMessageFromAspectMatchMsgs(expectedMessageFromAspect:string, ms
 enum MsgTypes {
   ERROR = 'aws:cdk:error',
   WARNING = 'aws:cdk:warning',
-  INFO = 'aws:cdk:info'
+  INFO = 'aws:cdk:info',
 }
 
 interface testAspectProps {
   /**
    * The source for the created test rule within the test security group
    */
-  source:ec2.IPeer;
+  source: ec2.IPeer;
   /**
    * The port the test rule will be created within the test security group
    */
-  port:ec2.Port;
+  port: ec2.Port;
   /**
    * The expected annotation message that will be returned by the aspect
    */
-  expectedMessageFromAspect:string;
+  expectedMessageFromAspect: string;
   /**
    * The expected type of the message
    *
    *
    * @default MsgTypes.ERROR
    */
-  expectedMessageType?:MsgTypes;
+  expectedMessageType?: MsgTypes;
   /**
    * Whether or not the created test security group should disable inline rules
    *
    *
    * @default false
    */
-  disableInlineRules?:boolean;
+  disableInlineRules?: boolean;
   /**
    * Whether or not the aspect should have generated a message
    *
    *
    * @default true
    */
-  shouldHaveGeneratedMessage?:boolean;
+  shouldHaveGeneratedMessage?: boolean;
 }
 
 function testAspect(app:App, aspect:SecurityGroupAspectBase, props:testAspectProps) {

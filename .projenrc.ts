@@ -2,7 +2,8 @@ import { awscdk, javascript } from 'projen';
 const project = new awscdk.AwsCdkConstructLibrary({
   author: 'Renovo Solutions',
   authorAddress: 'webmaster+cdk@renovo1.com',
-  cdkVersion: '2.86.0',
+  cdkVersion: '2.202.0',
+  jsiiVersion: '^5.8.0',
   defaultReleaseBranch: 'master',
   majorVersion: 2,
   projenrcTs: true,
@@ -70,7 +71,7 @@ const project = new awscdk.AwsCdkConstructLibrary({
   eslint: true,
   publishToPypi: {
     distName: 'renovosolutions.aws-cdk-aspects-security-group',
-    module: 'aspects-security-group',
+    module: 'renovosolutions_aspects_security_group',
   },
   publishToNuget: {
     dotNetNamespace: 'renovosolutions',
