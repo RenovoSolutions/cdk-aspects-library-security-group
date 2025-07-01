@@ -7,7 +7,7 @@ import { IConstruct } from 'constructs';
 export enum AnnotationType {
   WARNING = 'warning',
   ERROR = 'error',
-  INFO = 'info'
+  INFO = 'info',
 };
 
 /**
