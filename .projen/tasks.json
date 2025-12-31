@@ -251,31 +251,6 @@
         }
       ]
     },
-    "release:v1": {
-      "name": "release:v1",
-      "description": "Prepare a release from \"v1\" branch",
-      "env": {
-        "RELEASE": "true",
-        "MAJOR": "1"
-      },
-      "steps": [
-        {
-          "exec": "rm -fr dist"
-        },
-        {
-          "spawn": "bump"
-        },
-        {
-          "spawn": "build"
-        },
-        {
-          "spawn": "unbump"
-        },
-        {
-          "exec": "git diff --ignore-space-at-eol --exit-code"
-        }
-      ]
-    },
     "test": {
       "name": "test",
       "description": "Run tests",
