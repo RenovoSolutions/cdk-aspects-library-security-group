@@ -7,11 +7,6 @@ const project = new awscdk.AwsCdkConstructLibrary({
   defaultReleaseBranch: 'master',
   majorVersion: 2,
   projenrcTs: true,
-  releaseBranches: {
-    v1: {
-      majorVersion: 1,
-    },
-  },
   name: '@renovosolutions/cdk-aspects-library-security-group',
   description: 'A library of CDK aspects applying to security groups.',
   repositoryUrl: 'https://github.com/RenovoSolutions/cdk-aspects-library-security-group.git',
@@ -21,15 +16,17 @@ const project = new awscdk.AwsCdkConstructLibrary({
     'aws-cdk-construct',
     'projen',
   ],
+  buildWorkflow: false,
   depsUpgrade: true,
   depsUpgradeOptions: {
+    workflow: false,
     workflowOptions: {
       labels: ['auto-approve', 'deps-upgrade'],
     },
     exclude: ['projen'],
   },
   githubOptions: {
-    mergify: true,
+    mergify: false,
     mergifyOptions: {
       rules: [
         {
@@ -52,7 +49,7 @@ const project = new awscdk.AwsCdkConstructLibrary({
       ],
     },
     pullRequestLintOptions: {
-      semanticTitle: true,
+      semanticTitle: false,
       semanticTitleOptions: {
         types: [
           'chore',
@@ -82,11 +79,15 @@ const project = new awscdk.AwsCdkConstructLibrary({
 new javascript.UpgradeDependencies(project, {
   include: ['projen'],
   taskName: 'upgrade-projen',
-  workflow: true,
+  workflow: false,
   workflowOptions: {
     schedule: javascript.UpgradeDependenciesSchedule.expressions(['0 2 * * 1']),
   },
   pullRequestTitle: 'upgrade projen',
 });
+
+// Ignore the release workflow file so it's not committed to git
+project.gitignore.exclude('!/.github/workflows/release.yml');
+project.gitignore.addPatterns('.github/workflows/release.yml');
 
 project.synth();
